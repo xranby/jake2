@@ -3,7 +3,9 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="lib" path="resources"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jogamp"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/jogamp/gluegen-rt.jar" sourcepath="lib/jogamp/gluegen-java-src.zip"/>
+	<classpathentry kind="lib" path="lib/jogamp/joal.jar" sourcepath="lib/jogamp/joal-java-src.zip"/>
+	<classpathentry kind="lib" path="lib/jogamp/jogl-all.jar" sourcepath="lib/jogamp/jogl-java-src.zip"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
