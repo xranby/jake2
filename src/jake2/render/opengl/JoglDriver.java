@@ -278,7 +278,7 @@ public abstract class JoglDriver extends JoglGL implements GLDriver {
                     }
                 }
 		canvas.requestFocus();
-		
+		canvas.display(); // force GL resource validation
 		this.display = canvas;
 
 		setGL(display.getGL());
@@ -395,17 +395,20 @@ public abstract class JoglDriver extends JoglGL implements GLDriver {
         
         public Display(GLCapabilities capabilities) {
             super(capabilities);
+            setAutoSwapBufferMode(false);
         }
 
+        @Override
         public GL2 getGL() {
             activate();
             return super.getGL().getGL2();
         }
         
         
-    /**
+        /**
 	 * @see java.awt.Component#setBounds(int, int, int, int)
 	 */
+        @Override
 	public void setBounds(int x, int y, int width, int height) {
 	    final int mask = ~0x03;
 	    if ((width & 0x03) != 0) {
@@ -422,7 +425,7 @@ public abstract class JoglDriver extends JoglGL implements GLDriver {
 
         void activate() {
             final GLContext ctx = this.getContext();
-            if ( null != ctx && GLContext.getCurrent() != ctx ) {
+            if ( null != ctx && GLContext.getCurrent() != ctx ) {                
                 ctx.makeCurrent();
             }
         }
