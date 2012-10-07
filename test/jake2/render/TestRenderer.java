@@ -75,7 +75,7 @@ public class TestRenderer {
 	Locale.setDefault(Locale.US);
 	Jake2.Q2Dialog.setVisible(true);
 
-	String DRIVER = "jsr231";
+	String DRIVER = "jogl2";
 
 	Qcommon.Init(new String[] { "TestRenderer", "+set", "gl_mode", "6",
 		"+set", "vid_fullscreen", "0", "+set", "vid_ref", DRIVER });

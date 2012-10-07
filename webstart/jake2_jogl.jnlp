@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+" 
 	codebase="http://jake2.in-chemnitz.de/downloads"
-	href="jake2_jsr231.jnlp">
+	href="jake2_jogl2.jnlp">
 	
 	<information>
 		<title>Jake2</title>
@@ -27,7 +27,7 @@
 	<application-desc main-class="jake2.Jake2">
 		<argument>+set</argument>
 		<argument>vid_ref</argument>
-		<argument>jsr231</argument>
+		<argument>jogl2</argument>
 		<argument>+set</argument>
 		<argument>s_impl</argument>
 		<argument>joal</argument>

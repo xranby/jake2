@@ -39,16 +39,10 @@ public class Renderer {
     static RenderAPI fastRenderer = new jake2.render.fast.Misc();
     static RenderAPI basicRenderer = new jake2.render.basic.Misc();
 
-    static Vector drivers = new Vector(3);
+    static Vector drivers = new Vector(2);
 
     static {
         try {
-            try {
-                Class.forName("net.java.games.jogl.GL");
-                Class.forName("jake2.render.JoglRenderer");
-            } catch (ClassNotFoundException e) {
-                // ignore the old jogl driver if runtime not in classpath
-            }
             try {
                 Class.forName("org.lwjgl.opengl.GL11");
                 Class.forName("jake2.render.LwjglRenderer");
@@ -57,9 +51,10 @@ public class Renderer {
             }
             try {
                 Class.forName("javax.media.opengl.GL");
-                Class.forName("jake2.render.Jsr231Renderer");
+                Class.forName("jake2.render.JoglRenderer");
             } catch (ClassNotFoundException e) {
                 // ignore the new jogl driver if runtime not in classpath
+                e.printStackTrace();
             }
         } catch (Throwable e) {
             e.printStackTrace();
@@ -72,6 +67,8 @@ public class Renderer {
                     "Ref implementation can't be null");
         }
         if (!drivers.contains(impl)) {
+            System.err.println("Add driver: "+impl+", "+impl.getName());
+            Thread.dumpStack();
             drivers.add(impl);
         }
     }
@@ -115,8 +112,9 @@ public class Renderer {
     }
 
     public static String[] getDriverNames() {
-        if (drivers.isEmpty())
-            return null;
+        if (drivers.isEmpty()) {
+            return new String[0];
+        }
 
         int count = drivers.size();
         String[] names = new String[count];

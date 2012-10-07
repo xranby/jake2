@@ -27,7 +27,7 @@
 	<application-desc main-class="jake2.Jake2">
 		<argument>+set</argument>
 		<argument>vid_ref</argument>
-		<argument>jsr231</argument>
+		<argument>jogl2</argument>
 		<argument>+set</argument>
 		<argument>s_impl</argument>
 		<argument>joal</argument>

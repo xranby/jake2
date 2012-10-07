@@ -29,14 +29,18 @@ import jake2.Globals;
 import jake2.client.CL_ents;
 import jake2.game.entity_state_t;
 import jake2.qcommon.Com;
-import jake2.sound.*;
+import jake2.sound.Sound;
+import jake2.sound.sfx_t;
+import jake2.sound.sfxcache_t;
 import jake2.util.Math3D;
 
 import java.nio.ByteBuffer;
-import java.util.*;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
 
-import net.java.games.joal.AL;
-import net.java.games.joal.ALException;
+import com.jogamp.openal.AL;
+import com.jogamp.openal.ALException;
 
 /**
  * Channel
