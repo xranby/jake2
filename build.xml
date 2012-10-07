@@ -20,9 +20,9 @@
 
     <!-- different classpaths -->
     <path id="build.class.path">
-        <pathelement location="lib/jogl/gluegen-rt.jar"/>
-        <pathelement location="lib/jogl/jogl-all.jar"/>
-        <pathelement location="lib/joal/joal.jar"/>
+        <pathelement location="lib/jogamp/gluegen-rt.jar"/>
+        <pathelement location="lib/jogamp/jogl-all.jar"/>
+        <pathelement location="lib/jogamp/joal.jar"/>
         <pathelement location="lib/lwjgl/lwjgl.jar"/>
         <pathelement location="lib/lwjgl/lwjgl_util.jar"/>
         <pathelement location="${java.home}/lib/plugin.jar"/>
@@ -130,9 +130,9 @@
         <!-- proguard printseeds="on" printusage="off" outjar="${dist}/lib/jake2.jar"
             defaultpackage="" overloadaggressively="off" printmapping="jake2.map">
             <injar name="jake2.jar"/>
-            <libraryjar name="lib/jogl/jogl-all.jar"/>
-            <libraryjar name="lib/joal/joal.jar"/>
-            <libraryjar name="lib/joal/gluegen-rt.jar"/>
+            <libraryjar name="lib/jogamp/jogl-all.jar"/>
+            <libraryjar name="lib/jogamp/joal.jar"/>
+            <libraryjar name="lib/jogamp/gluegen-rt.jar"/>
             <libraryjar name="${classes}"/>
             <libraryjar name="${plugin}"/>
             <keep access="public" name="jake2.Jake2">
@@ -235,9 +235,9 @@
         <copy todir="webstart/lib">
             <fileset dir="${dist}/lib">
                 <include name="**/*.jar"/>
-                <exclude name="joal.jar"/>
-                <exclude name="gluegen-rt.jar"/>
-                <exclude name="jogl-all.jar"/>
+                <exclude name="joal*.jar"/>
+                <exclude name="gluegen-rt*.jar"/>
+                <exclude name="jogl-all*.jar"/>
             </fileset>
         </copy>
 
