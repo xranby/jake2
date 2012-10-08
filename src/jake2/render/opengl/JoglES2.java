@@ -5,11 +5,11 @@ import java.nio.*;
 
 import javax.media.opengl.GL2;
 
-public class JoglGL implements QGL {
+public class JoglES2 implements QGL {
     
     private GL2 gl;
     
-    JoglGL() {
+    JoglES2() {
         // singleton
     }
     

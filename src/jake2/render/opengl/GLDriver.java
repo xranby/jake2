@@ -1,8 +1,10 @@
 package jake2.render.opengl;
 
+import javax.media.nativewindow.util.Dimension;
+
 import jake2.qcommon.xcommand_t;
 
-import java.awt.Dimension;
+import com.jogamp.newt.ScreenMode;
 
 public interface GLDriver {
     
@@ -22,7 +24,7 @@ public interface GLDriver {
     
     void logNewFrame();
     
-    java.awt.DisplayMode[] getModeList();
+    ScreenMode[] getModeList();
 
     void updateScreen(xcommand_t callback);
 

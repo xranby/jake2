@@ -35,8 +35,12 @@ import jake2.sound.S;
 import jake2.sys.IN;
 import jake2.util.Vargs;
 
-import java.awt.Dimension;
-import java.awt.DisplayMode;
+import javax.media.nativewindow.util.Dimension;
+import javax.media.nativewindow.util.DimensionImmutable;
+import javax.media.nativewindow.util.SurfaceSize;
+
+import com.jogamp.newt.ScreenMode;
+import com.jogamp.newt.util.MonitorMode;
 
 /**
  * VID is a video driver.
@@ -137,8 +141,8 @@ public class VID extends Globals {
 		if (mode < 0 || mode >= modes.length) 
 			return false;
 			
-		dim.width = modes[mode].width;
-		dim.height = modes[mode].height;
+		dim.setWidth( modes[mode].width );
+		dim.setHeight( modes[mode].height );
 		
 		return true;
 	}
@@ -482,12 +486,15 @@ public class VID extends Globals {
 	};
 
 	static void initModeList() {
-		DisplayMode[] modes = re.getModeList();
+		ScreenMode[] modes = re.getModeList();
 		fs_resolutions = new String[modes.length];
 		fs_modes = new vidmode_t[modes.length];
 		for (int i = 0; i < modes.length; i++) {
-			DisplayMode m = modes[i];
-			StringBuffer sb = new StringBuffer(18);
+		    final ScreenMode sm = modes[i];
+                    final MonitorMode mm = sm.getMonitorMode();
+                    final SurfaceSize ss = mm.getSurfaceSize();
+                    final DimensionImmutable m = ss.getResolution();
+                    final StringBuffer sb = new StringBuffer();
 			sb.append('[');
 			sb.append(m.getWidth());
 			sb.append(' ');
@@ -704,7 +711,7 @@ public class VID extends Globals {
 		*/
 		Dimension dim = new Dimension();
 		re.DrawGetPicSize( dim, "m_banner_video" );
-		re.DrawPic( viddef.getWidth() / 2 - dim.width / 2, viddef.getHeight() /2 - 110, "m_banner_video" );
+		re.DrawPic( viddef.getWidth() / 2 - dim.getWidth() / 2, viddef.getHeight() /2 - 110, "m_banner_video" );
 
 		/*
 		** move cursor to a reasonable starting position

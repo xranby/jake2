@@ -28,15 +28,16 @@ package jake2;
 import jake2.qcommon.*;
 import jake2.sys.Timer;
 
-import java.util.Locale;
+// import java.util.Locale;
 
 /**
  * Jake2 is the main class of Quake2 for Java.
  */
 public final class Jake2 {
 
-    public static Q2DataDialog Q2Dialog;
-
+    // public static Q2DataDialog Q2Dialog;
+    public static Q2DataTool q2DataTool;
+    
     /**
      * main is used to start the game. Quake2 for Java supports the following
      * command line arguments:
@@ -80,9 +81,10 @@ public final class Jake2 {
     	// open the q2dialog, if we are not in dedicated mode.
     	if (Globals.dedicated.value != 1.0f)
     	{
-    		Q2Dialog = new Q2DataDialog();
-    		Locale.setDefault(Locale.US);
-    		Q2Dialog.setVisible(true);
+    	        q2DataTool = new Q2DataTool();
+    		// Q2Dialog = new Q2DataDialog();
+    		// Locale.setDefault(Locale.US);
+    		// Q2Dialog.setVisible(true);
     	}
 
         // in C the first arg is the filename

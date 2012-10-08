@@ -31,14 +31,13 @@ import jake2.game.cvar_t;
 import jake2.qcommon.*;
 import jake2.sound.S;
 import jake2.sys.*;
-import jake2.sys.NET;
-import jake2.sys.Sys;
 import jake2.util.*;
 
-import java.awt.Dimension;
 import java.io.RandomAccessFile;
 import java.util.Arrays;
 import java.util.Comparator;
+
+import javax.media.nativewindow.util.Dimension;
 
 /**
  * Menu
@@ -177,7 +176,7 @@ public final class Menu extends Key {
         Dimension dim = new Dimension();
         Globals.re.DrawGetPicSize(dim, name);
 
-        Globals.re.DrawPic(viddef.getWidth() / 2 - dim.width / 2,
+        Globals.re.DrawPic(viddef.getWidth() / 2 - dim.getWidth() / 2,
                 viddef.getHeight() / 2 - 110, name);
     }
 
@@ -446,8 +445,8 @@ public final class Menu extends Key {
 
         for (i = 0; i < names.length; i++) {
             Globals.re.DrawGetPicSize(dim, names[i]);
-            w = dim.width;
-            h = dim.height;
+            w = dim.getWidth();
+            h = dim.getHeight();
 
             if (w > widest)
                 widest = w;
@@ -470,8 +469,8 @@ public final class Menu extends Key {
                 (int) ((Globals.cls.realtime / 100)) % NUM_CURSOR_FRAMES);
 
         Globals.re.DrawGetPicSize(dim, "m_main_plaque");
-        w = dim.width;
-        h = dim.height;
+        w = dim.getWidth();
+        h = dim.getHeight();
         Globals.re.DrawPic(xoffset - 30 - w, ystart, "m_main_plaque");
 
         Globals.re.DrawPic(xoffset - 30 - w, ystart + h + 5, "m_main_logo");
@@ -4232,8 +4231,8 @@ public final class Menu extends Key {
         int w, h;
         Dimension d = new Dimension();
         re.DrawGetPicSize(d, "quit");
-        w = d.width;
-        h = d.height;
+        w = d.getWidth();
+        h = d.getHeight();
         re.DrawPic((viddef.getWidth() - w) / 2, (viddef.getHeight() - h) / 2, "quit");
     }
 

@@ -84,7 +84,7 @@ public class TestMap
 		// sehr wichtig !!!
 		VID.Shutdown();
 
-		Globals.re = this.re = Renderer.getDriver("jogl2", true);
+		Globals.re = this.re = Renderer.getDriver("joglgl2", true);
 
 		re.Init(0, 0);
 		

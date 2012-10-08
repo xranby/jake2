@@ -309,9 +309,6 @@ public class Q2DataDialog extends javax.swing.JDialog {
 		}
 		
 		
-		/* (non-Javadoc)
-		 * @see java.awt.Component#paint(java.awt.Graphics)
-		 */
 		public void paint(Graphics g) {
 			g.drawImage(image, 0, 0, null);
 		}

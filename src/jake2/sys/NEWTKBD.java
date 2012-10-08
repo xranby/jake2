@@ -1,40 +1,26 @@
 package jake2.sys;
 
-import jake2.Globals;
 import jake2.client.Key;
 
-import java.awt.*;
-import java.awt.event.*;
+import com.jogamp.newt.Window;
+import com.jogamp.newt.event.*;
 
-import javax.swing.ImageIcon;
-
-final public class JOGLKBD extends KBD
+final public class NEWTKBD extends KBD
 {
-	static Robot robot;
 	public static InputListener listener = new InputListener();
-	static Cursor emptyCursor = null;
-	static Component c = null;
+	// static Cursor emptyCursor = null;
+	static Window c = null;
 	
 	static int win_w2 = 0;
 	static int win_h2 = 0;
 	
-	static {
-		try {
-			robot = new Robot();
-		} catch (AWTException e) {
-                    if (!Globals.appletMode) {
-			System.exit(1);
-                    }
-		}
-	}
-		
 	public void Init() {
 	}
 
         // Used only for the applet case
-        public static void Init(Component component) {
-            c = component;
-            handleCreateAndConfigureNotify(component);
+        public static void Init(Window window) {
+            c = window;
+            handleCreateAndConfigureNotify(window);
         }
 
 	public void Update() {
@@ -51,12 +37,17 @@ final public class JOGLKBD extends KBD
 
 		Jake2InputEvent event;
 		while ( (event=InputListener.nextEvent()) != null ) {
+	                Window eventWin = null;
+	                Object source = event.ev.getSource();
+	                if(source instanceof Window) {
+	                    eventWin = (Window)source;
+	                }
 			switch(event.type) {
 				case Jake2InputEvent.KeyPress:
 				case Jake2InputEvent.KeyRelease:
-					Do_Key_Event(XLateKey((KeyEvent)event.ev), event.type == Jake2InputEvent.KeyPress);
+					Do_Key_Event(XLateKeyCode((KeyEvent)event.ev), event.type == Jake2InputEvent.KeyPress);
 					break;
-
+				    
 				case Jake2InputEvent.MotionNotify:
 //					if (IN.ignorefirst) {
 //						IN.ignorefirst = false;
@@ -70,7 +61,7 @@ final public class JOGLKBD extends KBD
 						my = 0;
 					}
 					break;
-				// see java.awt.MouseEvent
+					
 				case Jake2InputEvent.ButtonPress:
 					key = mouseEventToKey((MouseEvent)event.ev); 
 					Do_Key_Event(key, true);
@@ -82,7 +73,7 @@ final public class JOGLKBD extends KBD
 					break;
 					
 				case Jake2InputEvent.WheelMoved:
-					int dir = ((MouseWheelEvent)event.ev).getWheelRotation();
+					int dir = ((MouseEvent)event.ev).getWheelRotation();
 					if (dir > 0) {
 						Do_Key_Event(Key.K_MWHEELDOWN, true);
 						Do_Key_Event(Key.K_MWHEELDOWN, false);
@@ -93,51 +84,26 @@ final public class JOGLKBD extends KBD
 					break;
 					 
 				case Jake2InputEvent.CreateNotify :
-				case Jake2InputEvent.ConfigureNotify :
-                                        handleCreateAndConfigureNotify(((ComponentEvent)event.ev).getComponent());
+				case Jake2InputEvent.ConfigureNotify :				    
+                                        handleCreateAndConfigureNotify(eventWin);
 					break;
 			}
 		}
             
 		if (mx != 0 || my != 0) {
 			// move the mouse to the window center again
-			robot.mouseMove(win_x + win_w2, win_y + win_h2);
+			c.warpPointer(c.getWidth()/2, c.getHeight()/2);
 		}		
 	}
 
-        private static void handleCreateAndConfigureNotify(Component component) {
-            // Probably could unify this code better, but for now just
-            // leave the two code paths separate
-            if (!Globals.appletMode) {
-                win_x = 0;
-                win_y = 0;
+        private static void handleCreateAndConfigureNotify(Window component) {
+            if(null != component) {
                 win_w2 = component.getWidth() / 2;
                 win_h2 = component.getHeight() / 2;
-                int left = 0; int top = 0;
-                while (component != null) {
-                    if (component instanceof Container) {
-                        Insets insets = ((Container)component).getInsets();
-                        left += insets.left;
-                        top += insets.top;
-                    }
-                    win_x += component.getX();
-                    win_y += component.getY();
-                    component = component.getParent();
-                }
-                win_x += left; win_y += top;
-                win_w2 -= left / 2; win_h2 -= top / 2;
-            } else {
-                win_x = 0;
-                win_y = 0;
-                win_w2 = component.getWidth() / 2;
-                win_h2 = component.getHeight() / 2;
-                Point p = component.getLocationOnScreen();
-                win_x = p.x;
-                win_y = p.y;
             }
         }
 
-	// strange button numbering in java.awt.MouseEvent
+	// Different NEWT button numbering:
 	// BUTTON1(left) BUTTON2(center) BUTTON3(right)
 	// K_MOUSE1      K_MOUSE3        K_MOUSE2
 	private final int mouseEventToKey(MouseEvent ev) {
@@ -151,11 +117,9 @@ final public class JOGLKBD extends KBD
 	    }
 	}
 
-	private static int XLateKey(KeyEvent ev) {
- 
-		int key = 0;
+	private static int XLateKeyCode(KeyEvent ev) { 
 		int code = ev.getKeyCode();
-
+                int key = 0;
 		switch(code) {
 //	00626                 case XK_KP_Page_Up:      key = K_KP_PGUP; break;
 			case KeyEvent.VK_PAGE_UP: key = Key.K_PGUP; break;
@@ -221,40 +185,49 @@ final public class JOGLKBD extends KBD
 			// toggle console for DE and US keyboards
 			case KeyEvent.VK_DEAD_ACUTE:
 			case KeyEvent.VK_CIRCUMFLEX:
-			case KeyEvent.VK_DEAD_CIRCUMFLEX: key = '`'; break;
-			 
+			case KeyEvent.VK_DEAD_CIRCUMFLEX:
+			case KeyEvent.VK_BACK_QUOTE:
+			    key='`'; 
+			    break;
 			default:
-				key = ev.getKeyChar();
-
-				if (key >= 'A' && key <= 'Z')
-					key = key - 'A' + 'a';
-			break;
+			    if( KeyEvent.VK_0 <= code && code <= KeyEvent.VK_9 ) {
+			        key = code - KeyEvent.VK_0 + '0';
+			    }
+			    if( KeyEvent.VK_A <= code && code <= KeyEvent.VK_Z ) {
+			        key = code - KeyEvent.VK_A + 'a';  
+			    }
 		}
 		if (key > 255) key = 0;
 
 		return key;
-	}	
-		
+	}
+	
 	public void Do_Key_Event(int key, boolean down) {
 		Key.Event(key, down, Timer.Milliseconds());
 	}
 	
 	public void centerMouse() {
-		robot.mouseMove(win_x + win_w2, win_y + win_h2);
+	    c.warpPointer(c.getWidth()/2, c.getHeight()/2);
 	}
 	
 	public void installGrabs()
 	{
+	    /*
 		if (emptyCursor == null) {
 			ImageIcon emptyIcon = new ImageIcon(new byte[0]);
 			emptyCursor = c.getToolkit().createCustomCursor(emptyIcon.getImage(), new Point(0, 0), "emptyCursor");
 		}
 		c.setCursor(emptyCursor);
-		centerMouse();
+	     */
+	    c.setPointerVisible(false);
+	    centerMouse();
 	}
 	
 	public void uninstallGrabs()
 	{
+	    /*
 		c.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		*/
+	    c.setPointerVisible(true);
 	}
 }

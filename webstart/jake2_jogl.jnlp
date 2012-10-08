@@ -7,7 +7,7 @@
 		<title>Jake2 - JOGL2</title>
 		<vendor>Bytonic Software</vendor>
 		<homepage href="http://www.bytonic.de/html/jake2.html"/>
-		<description>Java port of the Quake2 game engine (jogl2)</description>
+		<description>Java port of the Quake2 game engine (jogl-gl2-newt)</description>
 		<icon href="http://jogamp.org/deployment/test/jake2/icon.gif"/>
 		<offline-allowed/>
 	</information>
@@ -27,7 +27,7 @@
 	<application-desc main-class="jake2.Jake2">
 		<argument>+set</argument>
 		<argument>vid_ref</argument>
-		<argument>jogl2</argument>
+		<argument>joglgl2</argument>
 		<argument>+set</argument>
 		<argument>s_impl</argument>
 		<argument>joal</argument>

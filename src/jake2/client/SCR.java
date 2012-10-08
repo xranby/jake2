@@ -33,10 +33,11 @@ import jake2.sound.S;
 import jake2.sys.Timer;
 import jake2.util.Vargs;
 
-import java.awt.Dimension;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
+
+import javax.media.nativewindow.util.Dimension;
 
 /**
  * SCR
@@ -489,7 +490,7 @@ public final class SCR extends Globals {
             return;
 
         re.DrawGetPicSize(dim, "pause");
-        re.DrawPic((viddef.getWidth() - dim.width) / 2, viddef.getHeight() / 2 + 8,
+        re.DrawPic((viddef.getWidth() - dim.getWidth()) / 2, viddef.getHeight() / 2 + 8,
                 "pause");
     }
 
@@ -504,8 +505,8 @@ public final class SCR extends Globals {
 
         scr_draw_loading = 0;
         re.DrawGetPicSize(dim, "loading");
-        re.DrawPic((viddef.getWidth() - dim.width) / 2,
-                (viddef.getHeight() - dim.height) / 2, "loading");
+        re.DrawPic((viddef.getWidth() - dim.getWidth()) / 2,
+                (viddef.getHeight() - dim.getHeight()) / 2, "loading");
     }
 
     // =============================================================================
@@ -769,8 +770,8 @@ public final class SCR extends Globals {
 
         }
 
-        dim.width = width * 8;
-        dim.height = lines * 8;
+        dim.setWidth(width * 8);
+        dim.setHeight(lines * 8);
     }
 
     static void DrawHUDString(String string, int x, int y, int centerwidth,
@@ -864,8 +865,8 @@ public final class SCR extends Globals {
             crosshair_pic = "ch" + (int) crosshair.value;
             Dimension dim = new Dimension();
             re.DrawGetPicSize(dim, crosshair_pic);
-            crosshair_width = dim.width;
-            crosshair_height = dim.height;
+            crosshair_width = dim.getWidth();
+            crosshair_height = dim.getHeight();
             if (crosshair_width == 0)
                 crosshair_pic = "";
         }
@@ -1214,8 +1215,8 @@ public final class SCR extends Globals {
                 re.CinematicSetPalette(null);
                 scr_draw_loading = 0; // false
                 re.DrawGetPicSize(dim, "loading");
-                re.DrawPic((viddef.getWidth() - dim.width) / 2,
-                        (viddef.getHeight() - dim.height) / 2, "loading");
+                re.DrawPic((viddef.getWidth() - dim.getWidth()) / 2,
+                        (viddef.getHeight() - dim.getHeight()) / 2, "loading");
             }
             // if a cinematic is supposed to be running, handle menus
             // and console specially

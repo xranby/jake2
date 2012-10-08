@@ -7,8 +7,9 @@
  
 package jake2.render;
 
-import java.awt.Dimension;
-import java.awt.DisplayMode;
+import javax.media.nativewindow.util.Dimension;
+
+import com.jogamp.newt.ScreenMode;
 
 import jake2.client.refdef_t;
 import jake2.client.refexport_t;
@@ -81,7 +82,7 @@ public class DummyRenderer implements refexport_t {
 	}
 
 	/* (non-Javadoc)
-	 * @see jake2.client.refexport_t#DrawGetPicSize(java.awt.Dimension, java.lang.String)
+	 * @see jake2.client.refexport_t#DrawGetPicSize(Dimension, java.lang.String)
 	 */
 	public void DrawGetPicSize(Dimension dim, String name) {
 	}
@@ -169,7 +170,7 @@ public class DummyRenderer implements refexport_t {
 	/* (non-Javadoc)
 	 * @see jake2.client.refexport_t#getModeList()
 	 */
-	public DisplayMode[] getModeList() {
+	public ScreenMode[] getModeList() {
 		return null;
 	}
 

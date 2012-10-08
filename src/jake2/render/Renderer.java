@@ -39,7 +39,7 @@ public class Renderer {
     static RenderAPI fastRenderer = new jake2.render.fast.Misc();
     static RenderAPI basicRenderer = new jake2.render.basic.Misc();
 
-    static Vector drivers = new Vector(2);
+    static Vector drivers = new Vector(3);
 
     static {
         try {
@@ -50,8 +50,15 @@ public class Renderer {
                 // ignore the lwjgl driver if runtime not in classpath
             }
             try {
-                Class.forName("javax.media.opengl.GL");
-                Class.forName("jake2.render.JoglRenderer");
+                Class.forName("javax.media.opengl.GL2ES2");
+                Class.forName("jake2.render.JoglES2Renderer");
+            } catch (ClassNotFoundException e) {
+                // ignore the new jogl driver if runtime not in classpath
+                e.printStackTrace();
+            }
+            try {
+                Class.forName("javax.media.opengl.GL2");
+                Class.forName("jake2.render.JoglGL2Renderer");
             } catch (ClassNotFoundException e) {
                 // ignore the new jogl driver if runtime not in classpath
                 e.printStackTrace();
@@ -68,7 +75,6 @@ public class Renderer {
         }
         if (!drivers.contains(impl)) {
             System.err.println("Add driver: "+impl+", "+impl.getName());
-            Thread.dumpStack();
             drivers.add(impl);
         }
     }

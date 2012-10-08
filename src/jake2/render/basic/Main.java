@@ -34,9 +34,10 @@ import jake2.util.Lib;
 import jake2.util.Math3D;
 import jake2.util.Vargs;
 
-import java.awt.Dimension;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+
+import javax.media.nativewindow.util.Dimension;
 
 /**
  * Main

@@ -24,34 +24,34 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package jake2.render;
 
+import javax.media.nativewindow.util.Dimension;
+
 import jake2.Defines;
 import jake2.client.refdef_t;
 import jake2.client.refexport_t;
-import jake2.render.opengl.JoglDriver;
-import jake2.sys.JOGLKBD;
+import jake2.render.opengl.JoglES2Driver;
+import jake2.sys.NEWTKBD;
 import jake2.sys.KBD;
-
-import java.awt.Dimension;
 
 /**
  * JoglRenderer
  * 
  * @author dsanders/cwei
  */
-final class JoglRenderer extends JoglDriver implements refexport_t, Ref {
+final class JoglES2Renderer extends JoglES2Driver implements refexport_t, Ref {
 
-    public static final String DRIVER_NAME = "jogl2";
+    public static final String DRIVER_NAME = "jogles2";
 
-    private KBD kbd = new JOGLKBD();
+    private KBD kbd = new NEWTKBD();
 
     // is set from Renderer factory
     private RenderAPI impl;
 
     static {
-        Renderer.register(new JoglRenderer());
+        Renderer.register(new JoglES2Renderer());
     };
 
-    private JoglRenderer() {
+    private JoglES2Renderer() {
         // singleton
     }
 
@@ -137,7 +137,7 @@ final class JoglRenderer extends JoglDriver implements refexport_t, Ref {
     }
 
     /** 
-     * @see jake2.client.refexport_t#DrawGetPicSize(java.awt.Dimension, java.lang.String)
+     * @see jake2.client.refexport_t#DrawGetPicSize(Dimension, java.lang.String)
      */
     public final void DrawGetPicSize(Dimension dim, String name) {
         impl.Draw_GetPicSize(dim, name);

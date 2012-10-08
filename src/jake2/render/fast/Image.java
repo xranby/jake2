@@ -32,13 +32,14 @@ import jake2.render.image_t;
 import jake2.util.Lib;
 import jake2.util.Vargs;
 
-import java.awt.Dimension;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.media.nativewindow.util.Dimension;
 
 /**
  * Image
@@ -472,8 +473,8 @@ public abstract class Image extends Main {
 		}
 
 		if (dim != null) {
-			dim.width = width;
-			dim.height = height;
+			dim.setWidth(width);
+			dim.setHeight(height);
 		}
 
 		//
@@ -556,8 +557,8 @@ public abstract class Image extends Main {
 		numPixels = columns * rows;
 		
 		if (dim != null) {
-			dim.width = columns;
-			dim.height = rows;
+			dim.setWidth(columns);
+			dim.setHeight(rows);
 		}
 		
 		pic = new byte[numPixels * 4]; // targa_rgba;
@@ -1473,7 +1474,7 @@ public abstract class Image extends Main {
 			pic = LoadPCX(name, null, dim);
 			if (pic == null)
 				return null;
-			image = GL_LoadPic(name, pic, dim.width, dim.height, type, 8);
+			image = GL_LoadPic(name, pic, dim.getWidth(), dim.getHeight(), type, 8);
 
 		}
 		else if (name.endsWith(".wal")) {
@@ -1488,14 +1489,14 @@ public abstract class Image extends Main {
 			if (pic == null)
 				return null;
 
-			image = GL_LoadPic(name, pic, dim.width, dim.height, type, 32);
+			image = GL_LoadPic(name, pic, dim.getWidth(), dim.getHeight(), type, 32);
 
 		} else {
 		
 			pic = LoadPCX("pics/" + name + ".pcx", null, dim);
 			if (pic == null)
 				return null;
-			image = GL_LoadPic(name, pic, dim.width, dim.height, type, 8);
+			image = GL_LoadPic(name, pic, dim.getWidth(), dim.getHeight(), type, 8);
 			
 		}
 		

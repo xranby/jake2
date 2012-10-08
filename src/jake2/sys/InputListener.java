@@ -25,17 +25,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 package jake2.sys;
 
-import java.awt.event.*;
+import com.jogamp.newt.event.*;
+
 import java.util.LinkedList;
 
 /**
  * InputListener
  */
-public final class InputListener implements KeyListener, MouseListener, 
-		MouseMotionListener, ComponentListener, MouseWheelListener {
+public final class InputListener implements KeyListener, MouseListener, WindowListener {
 
 	// modifications of eventQueue must be thread safe!
-	private static LinkedList eventQueue = new LinkedList();
+	private static LinkedList<Jake2InputEvent> eventQueue = new LinkedList<Jake2InputEvent>();
 
 	static void addEvent(Jake2InputEvent ev) {
 		synchronized (eventQueue) {
@@ -51,67 +51,88 @@ public final class InputListener implements KeyListener, MouseListener,
 		return ev;
 	}
 
+        @Override
 	public void keyPressed(KeyEvent e) {
-		if (!((e.getModifiersEx() & InputEvent.ALT_GRAPH_DOWN_MASK) != 0)) {
-			addEvent(new Jake2InputEvent(Jake2InputEvent.KeyPress, e));
-		}
+	    addEvent(new Jake2InputEvent(Jake2InputEvent.KeyPress, e));
 	}
 
+        @Override
 	public void keyReleased(KeyEvent e) {
-		addEvent(new Jake2InputEvent(Jake2InputEvent.KeyRelease, e));
+	    addEvent(new Jake2InputEvent(Jake2InputEvent.KeyRelease, e));
 	}
 
+        @Override
 	public void keyTyped(KeyEvent e) {
-		if ((e.getModifiersEx() & InputEvent.ALT_GRAPH_DOWN_MASK) != 0) {
-			addEvent(new Jake2InputEvent(Jake2InputEvent.KeyPress, e));
-			addEvent(new Jake2InputEvent(Jake2InputEvent.KeyRelease, e));
-		}		
 	}
 
+        @Override
 	public void mouseClicked(MouseEvent e) {
 	}
 
+        @Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
+        @Override
 	public void mouseExited(MouseEvent e) {
 	}
 
+        @Override
+        public void mouseWheelMoved(MouseEvent e) {
+            addEvent(new Jake2InputEvent(Jake2InputEvent.WheelMoved, e));
+        }
+
+        @Override
 	public void mousePressed(MouseEvent e) {
 		addEvent(new Jake2InputEvent(Jake2InputEvent.ButtonPress, e));
 	}
 
+        @Override
 	public void mouseReleased(MouseEvent e) {
 		addEvent(new Jake2InputEvent(Jake2InputEvent.ButtonRelease, e));
 	}
 
+        @Override
 	public void mouseDragged(MouseEvent e) {
 		addEvent(new Jake2InputEvent(Jake2InputEvent.MotionNotify, e));
 	}
 
+        @Override
 	public void mouseMoved(MouseEvent e) {
 		addEvent(new Jake2InputEvent(Jake2InputEvent.MotionNotify, e));
 	}
 
-	public void componentHidden(ComponentEvent e) {
-	}
-
-	public void componentMoved(ComponentEvent e) {
+        @Override
+	public void windowMoved(WindowEvent e) {
 		addEvent(new Jake2InputEvent(Jake2InputEvent.ConfigureNotify, e));
 	}
 
-	public void componentResized(ComponentEvent e) {
+        @Override
+	public void windowResized(WindowEvent e) {
 		addEvent(new Jake2InputEvent(Jake2InputEvent.ConfigureNotify, e));
 	}
 
-	public void componentShown(ComponentEvent e) {
-		JOGLKBD.c = e.getComponent();
-		addEvent(new Jake2InputEvent(Jake2InputEvent.CreateNotify, e));
-	}
-
-    public void mouseWheelMoved(MouseWheelEvent e) {
-        addEvent(new Jake2InputEvent(Jake2InputEvent.WheelMoved, e));
-    }	
+        @Override
+        public void windowDestroyNotify(WindowEvent e) {
+        }
+        
+        @Override
+        public void windowDestroyed(WindowEvent e) {
+        }
+        
+        @Override
+        public void windowGainedFocus(WindowEvent e) {
+            addEvent(new Jake2InputEvent(Jake2InputEvent.ConfigureNotify, e));
+        }
+        
+        @Override
+        public void windowLostFocus(WindowEvent e) {
+        }
+        
+        @Override
+        public void windowRepaint(WindowUpdateEvent e) {
+            addEvent(new Jake2InputEvent(Jake2InputEvent.ConfigureNotify, e));
+        }	
 
 }
 

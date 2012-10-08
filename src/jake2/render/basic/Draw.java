@@ -31,9 +31,10 @@ import jake2.qcommon.Com;
 import jake2.render.image_t;
 import jake2.util.Lib;
 
-import java.awt.Dimension;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+
+import javax.media.nativewindow.util.Dimension;
 
 /**
  * Draw
@@ -123,8 +124,8 @@ public abstract class Draw extends Image {
 	public void Draw_GetPicSize(Dimension dim, String pic)	{
 
 		image_t image = Draw_FindPic(pic);
-		dim.width = (image != null) ? image.width : -1;
-		dim.height = (image != null) ? image.height : -1;
+		dim.setWidth((image != null) ? image.width : -1);
+		dim.setHeight((image != null) ? image.height : -1);
 	}
 
 	/*

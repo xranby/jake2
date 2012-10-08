@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 package jake2.sys;
 
-import java.awt.AWTEvent;
+import com.jogamp.newt.event.NEWTEvent;
 
 /**
  * Jake2InputEvent
@@ -40,9 +40,9 @@ class Jake2InputEvent {
 	static final int ConfigureNotify = 6;
 	static final int WheelMoved = 7;
 	int type;
-	AWTEvent ev;
+	NEWTEvent ev;
 	
-	Jake2InputEvent(int type, AWTEvent ev) {
+	Jake2InputEvent(int type, NEWTEvent ev) {
 		this.type = type;
 		this.ev = ev;
 	}

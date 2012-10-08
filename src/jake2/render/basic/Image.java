@@ -32,14 +32,16 @@ import jake2.render.image_t;
 import jake2.util.Lib;
 import jake2.util.Vargs;
 
-import java.awt.Dimension;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
+// import java.awt.geom.AffineTransform; // FIXME
+// import java.awt.image.AffineTransformOp; // FIXME
+// import java.awt.image.BufferedImage; // FIXME
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.util.Arrays;
+
+import javax.media.nativewindow.util.Dimension;
 
 
 /**
@@ -493,8 +495,8 @@ public abstract class Image extends Main {
         }
 
         if (dim != null) {
-            dim.width = width;
-            dim.height = height;
+            dim.setWidth(width);
+            dim.setHeight(height);
         }
 
         //
@@ -574,8 +576,8 @@ public abstract class Image extends Main {
         numPixels = columns * rows;
 
         if (dim != null) {
-            dim.width = columns;
-            dim.height = rows;
+            dim.setWidth(columns);
+            dim.setHeight(rows);
         }
 
         pic = new byte[numPixels * 4]; // targa_rgba;
@@ -884,6 +886,10 @@ public abstract class Image extends Main {
         //		
 
         // *** this source do the same ***
+        throw new RuntimeException("Replace impl. w/ non AWT!");
+        /**
+         * NO AWT !
+         * 
         BufferedImage image = new BufferedImage(inwidth, inheight,
                 BufferedImage.TYPE_INT_ARGB);
 
@@ -895,6 +901,7 @@ public abstract class Image extends Main {
         BufferedImage tmp = op.filter(image, null);
 
         tmp.getRGB(0, 0, outwidth, outheight, out, 0, outwidth);
+        */
 
         // *** end ***
 
@@ -1490,7 +1497,7 @@ public abstract class Image extends Main {
             pic = LoadPCX(name, null, dim);
             if (pic == null)
                 return null;
-            image = GL_LoadPic(name, pic, dim.width, dim.height, type, 8);
+            image = GL_LoadPic(name, pic, dim.getWidth(), dim.getHeight(), type, 8);
 
         } else if (name.endsWith(".wal")) {
 
@@ -1503,7 +1510,7 @@ public abstract class Image extends Main {
             if (pic == null)
                 return null;
 
-            image = GL_LoadPic(name, pic, dim.width, dim.height, type, 32);
+            image = GL_LoadPic(name, pic, dim.getWidth(), dim.getHeight(), type, 32);
 
         } else
             return null;

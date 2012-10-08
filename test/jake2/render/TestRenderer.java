@@ -35,9 +35,10 @@ import jake2.sys.KBD;
 import jake2.util.Lib;
 import jake2.util.Math3D;
 
-import java.awt.Dimension;
 import java.nio.FloatBuffer;
 import java.util.*;
+
+import javax.media.nativewindow.util.Dimension;
 
 /**
  * TestRenderer
@@ -75,7 +76,7 @@ public class TestRenderer {
 	Locale.setDefault(Locale.US);
 	Jake2.Q2Dialog.setVisible(true);
 
-	String DRIVER = "jogl2";
+	String DRIVER = "joglgl2";
 
 	Qcommon.Init(new String[] { "TestRenderer", "+set", "gl_mode", "6",
 		"+set", "vid_fullscreen", "0", "+set", "vid_ref", DRIVER });
@@ -125,7 +126,7 @@ public class TestRenderer {
         Dimension wal = new Dimension();
         re.DrawGetPicSize(wal, "/textures/e1u1/basemap.wal");
         
-        re.DrawPic(0, viddef.getHeight() - wal.height, "/textures/e1u1/basemap.wal");
+        re.DrawPic(0, viddef.getHeight() - wal.getHeight(), "/textures/e1u1/basemap.wal");
         
         switch (testnr) {
         case 0:
