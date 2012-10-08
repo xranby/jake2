@@ -43,6 +43,8 @@ import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
 import javax.swing.ImageIcon;
 
+import jogamp.opengl.FPSCounterImpl;
+
 /**
  * JoglCommon
  */
@@ -360,7 +362,6 @@ public abstract class JoglDriver extends JoglGL implements GLDriver {
     }
     
     public void endFrame() {
-	glFlush();
 	display.update();
     }
 
@@ -392,10 +393,13 @@ public abstract class JoglDriver extends JoglGL implements GLDriver {
     
     @SuppressWarnings("serial")
     private static class Display extends GLCanvas {
+        final FPSCounterImpl fpsCounter;
         
         public Display(GLCapabilities capabilities) {
             super(capabilities);
             setAutoSwapBufferMode(false);
+            fpsCounter = new FPSCounterImpl();
+            fpsCounter.setUpdateFPSFrames(60*5, System.err); // all 5s in 60hz mode
         }
 
         @Override
@@ -440,6 +444,7 @@ public abstract class JoglDriver extends JoglGL implements GLDriver {
         void update() {
             release();
             swapBuffers();
+            fpsCounter.tickFPS();
         }
     }
 }
