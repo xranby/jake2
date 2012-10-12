@@ -73,9 +73,10 @@ public class NEWTWin {
      * @param dim
      * @param mode
      * @param fullscreen
+     * @param driverName TODO
      * @return enum Base.rserr_t
      */
-    public int setMode(Dimension dim, int mode, boolean fullscreen) {
+    public int setMode(GLProfile glp, Dimension dim, int mode, boolean fullscreen, String driverName) {
 
         final Dimension newDim = new Dimension();
 
@@ -110,8 +111,8 @@ public class NEWTWin {
         }
         
         if(null == window) {
-            window = GLWindow.create(screen, new GLCapabilities(GLProfile.get(GLProfile.GL2)));
-            window.setTitle("Jake2 (jogl-gl2-newt)");
+            window = GLWindow.create(screen, new GLCapabilities(glp));
+            window.setTitle("Jake2 ("+driverName+"-newt-"+glp.getName().toLowerCase()+")");
         }
 
         if (oldDisplayMode == null) {

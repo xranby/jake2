@@ -50,6 +50,13 @@ public class Renderer {
                 // ignore the lwjgl driver if runtime not in classpath
             }
             try {
+                Class.forName("javax.media.opengl.GL2ES1");
+                Class.forName("jake2.render.JoglES1Renderer");
+            } catch (ClassNotFoundException e) {
+                // ignore the new jogl driver if runtime not in classpath
+                e.printStackTrace();
+            }
+            try {
                 Class.forName("javax.media.opengl.GL2ES2");
                 Class.forName("jake2.render.JoglES2Renderer");
             } catch (ClassNotFoundException e) {

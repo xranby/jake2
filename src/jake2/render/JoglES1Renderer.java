@@ -30,7 +30,7 @@ import jake2.Defines;
 import jake2.client.refdef_t;
 import jake2.client.refexport_t;
 import jake2.qcommon.Cvar;
-import jake2.render.opengl.JoglGL2Driver;
+import jake2.render.opengl.JoglES1Driver;
 import jake2.sys.NEWTKBD;
 import jake2.sys.KBD;
 
@@ -39,9 +39,9 @@ import jake2.sys.KBD;
  * 
  * @author dsanders/cwei
  */
-final class JoglGL2Renderer extends JoglGL2Driver implements refexport_t, Ref {
+final class JoglES1Renderer extends JoglES1Driver implements refexport_t, Ref {
 
-    public static final String DRIVER_NAME = "joglgl2";
+    public static final String DRIVER_NAME = "jogles1";
 
     private KBD kbd = new NEWTKBD();
 
@@ -49,10 +49,10 @@ final class JoglGL2Renderer extends JoglGL2Driver implements refexport_t, Ref {
     private RenderAPI impl;
 
     static {
-        Renderer.register(new JoglGL2Renderer());
+        Renderer.register(new JoglES1Renderer());
     };
 
-    private JoglGL2Renderer() {
+    private JoglES1Renderer() {
         // singleton
     }
 
@@ -70,9 +70,11 @@ final class JoglGL2Renderer extends JoglGL2Driver implements refexport_t, Ref {
         impl.setGLDriver(this);
         
         // Cvar.Set("gl_clear", "1"); // FIXME
-        
+                
         // pre init, reads Cvar's
-        if (!impl.R_Init(vid_xpos, vid_ypos)) return false;
+        if (!impl.R_Init(vid_xpos, vid_ypos)) {
+            return false;
+        }
         // activates the OpenGL context        
         activate();
         
@@ -254,5 +256,4 @@ final class JoglGL2Renderer extends JoglGL2Driver implements refexport_t, Ref {
         this.impl = renderer;
         return this;
     }
-
 }

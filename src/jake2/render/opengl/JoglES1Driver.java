@@ -36,11 +36,12 @@ import com.jogamp.newt.ScreenMode;
 /**
  * JoglCommon
  */
-public abstract class JoglGL2Driver extends JoglGL2ES1 implements GLDriver {
+public abstract class JoglES1Driver extends JoglGL2ES1 implements GLDriver {
 
-    protected static GLProfile glp = GLProfile.get(GLProfile.GL2); // exception if n/a is desired
+    // protected static GLProfile glp = GLProfile.get(GLProfile.GLES1); // exception if n/a is desired
+    protected static GLProfile glp = GLProfile.get(GLProfile.GL2ES1); // exception if n/a is desired
     
-    protected JoglGL2Driver() {
+    protected JoglES1Driver() {
         // singleton
     }
 
@@ -61,8 +62,8 @@ public abstract class JoglGL2Driver extends JoglGL2ES1 implements GLDriver {
         }
         int res = newtWin.setMode(glp, dim, mode, fullscreen, getName());
         if( Base.rserr_ok == res ) {
-            
-            setGL(newtWin.window.getGL().getGL2());
+            activate();
+            setGL(newtWin.window.getGL().getGL2ES1());
             init(0, 0);
             
             return Base.rserr_ok;
