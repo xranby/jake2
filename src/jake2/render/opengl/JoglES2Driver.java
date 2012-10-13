@@ -44,7 +44,7 @@ public abstract class JoglES2Driver extends JoglGL2ES1 implements GLDriver {
     protected static GLProfile glp = GLProfile.getGL2ES2(); // exception if n/a is desired
     
     // protected static final ShaderSelectionMode shaderSelectionMode = ShaderSelectionMode.AUTO;
-    protected static final ShaderSelectionMode shaderSelectionMode = ShaderSelectionMode.COLOR_TEXTURE;
+    protected static final ShaderSelectionMode shaderSelectionMode = ShaderSelectionMode.COLOR_TEXTURE2;
     
     protected JoglES2Driver() {
         // singleton
