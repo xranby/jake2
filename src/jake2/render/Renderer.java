@@ -46,23 +46,26 @@ public class Renderer {
             try {
                 Class.forName("javax.media.opengl.GL2");
                 Class.forName("jake2.render.JoglGL2Renderer");
-            } catch (ClassNotFoundException e) {
+            } catch (Throwable t) {
                 // ignore the new jogl driver if runtime not in classpath
-                e.printStackTrace();
+                System.err.println("Catched exception: "+t.getMessage());
+                // t.printStackTrace();
             }
             try {
                 Class.forName("javax.media.opengl.GL2ES1");
                 Class.forName("jake2.render.JoglES1Renderer");
-            } catch (ClassNotFoundException e) {
+            } catch (Throwable t) {
                 // ignore the new jogl driver if runtime not in classpath
-                e.printStackTrace();
+                System.err.println("Catched exception: "+t.getMessage());
+                // t.printStackTrace();
             }
             try {
                 Class.forName("javax.media.opengl.GL2ES2");
                 Class.forName("jake2.render.JoglES2Renderer");
-            } catch (ClassNotFoundException e) {
+            } catch (Throwable t) {
                 // ignore the new jogl driver if runtime not in classpath
-                e.printStackTrace();
+                System.err.println("Catched exception: "+t.getMessage());
+                // t.printStackTrace();
             }
         } catch (Throwable e) {
             e.printStackTrace();
