@@ -15,5 +15,6 @@ CP=lib/jogamp/gluegen-rt.jar:lib/jogamp/joal.jar:lib/jogamp/jogl-all.jar:dist/li
 #D_ARGS="-Djogl.debug.FixedFuncPipeline"
 
 #G_ARGS="+connect 10.1.0.52 +set cl_timeout 12000"
+G_ARGS="+set timeout 12000 +set cl_timeout 12000"
 
 exec java -Xmx100M -cp $CP $D_ARGS jake2.Jake2 $G_ARGS $*
