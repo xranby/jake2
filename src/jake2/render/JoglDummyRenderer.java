@@ -29,7 +29,7 @@ import javax.media.nativewindow.util.Dimension;
 import jake2.Defines;
 import jake2.client.refdef_t;
 import jake2.client.refexport_t;
-import jake2.render.opengl.JoglES2Driver;
+import jake2.render.opengl.JoglDummyDriver;
 import jake2.sys.NEWTKBD;
 import jake2.sys.KBD;
 
@@ -38,9 +38,9 @@ import jake2.sys.KBD;
  * 
  * @author dsanders/cwei
  */
-final class JoglES2Renderer extends JoglES2Driver implements refexport_t, Ref {
+final class JoglDummyRenderer extends JoglDummyDriver implements refexport_t, Ref {
 
-    public static final String DRIVER_NAME = "jogles2";
+    public static final String DRIVER_NAME = "jogldummy";
 
     private KBD kbd = new NEWTKBD();
 
@@ -48,10 +48,10 @@ final class JoglES2Renderer extends JoglES2Driver implements refexport_t, Ref {
     private RenderAPI impl;
 
     static {
-        Renderer.register(new JoglES2Renderer());
+        Renderer.register(new JoglDummyRenderer());
     };
 
-    private JoglES2Renderer() {
+    private JoglDummyRenderer() {
         // singleton
     }
 

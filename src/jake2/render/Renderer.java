@@ -44,6 +44,13 @@ public class Renderer {
     static {
         try {
             try {
+                Class.forName("jake2.render.JoglDummyRenderer");
+            } catch (Throwable t) {
+                // ignore the new jogl driver if runtime not in classpath
+                System.err.println("Catched exception: "+t.getMessage());
+                // t.printStackTrace();
+            }
+            try {
                 Class.forName("javax.media.opengl.GL2");
                 Class.forName("jake2.render.JoglGL2Renderer");
             } catch (Throwable t) {

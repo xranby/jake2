@@ -32,21 +32,16 @@ import javax.media.nativewindow.util.Dimension;
 import javax.media.opengl.*;
 
 import com.jogamp.newt.ScreenMode;
-import com.jogamp.opengl.util.glsl.fixedfunc.FixedFuncUtil;
-import com.jogamp.opengl.util.glsl.fixedfunc.ShaderSelectionMode;
 
 /**
  * JoglCommon
  */
-public abstract class JoglES2Driver extends JoglGL2ES1 implements GLDriver {
+public abstract class JoglDummyDriver extends DummyGL implements GLDriver {
 
-    // protected static GLProfile glp = GLProfile.get(GLProfile.GLES2); // exception if n/a is desired
     protected static GLProfile glp = GLProfile.getGL2ES2(); // exception if n/a is desired
     
-    // protected static final ShaderSelectionMode shaderSelectionMode = ShaderSelectionMode.AUTO;
-    protected static final ShaderSelectionMode shaderSelectionMode = ShaderSelectionMode.COLOR_TEXTURE2;
-    
-    protected JoglES2Driver() {
+    protected JoglDummyDriver() {
+        super();
         // singleton
     }
 
@@ -68,7 +63,6 @@ public abstract class JoglES2Driver extends JoglGL2ES1 implements GLDriver {
         int res = newtWin.setMode(glp, dim, mode, fullscreen, getName());
         if( Base.rserr_ok == res ) {
             activate();
-            setGL( FixedFuncUtil.wrapFixedFuncEmul(newtWin.window.getGL(), shaderSelectionMode, null, true, false) );
             init(0, 0);
             
             return Base.rserr_ok;
@@ -107,7 +101,7 @@ public abstract class JoglES2Driver extends JoglGL2ES1 implements GLDriver {
     }
 
     public void endFrame() {
-        newtWin.window.swapBuffers();
+        // newtWin.window.swapBuffers();
         /*
         final GLContext ctx = newtWin.window.getContext();
         if ( null != ctx && GLContext.getCurrent() == ctx) {

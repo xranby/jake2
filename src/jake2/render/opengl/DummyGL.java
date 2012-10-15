@@ -1,13 +1,14 @@
 package jake2.render.opengl;
 
-
-import java.nio.*;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 public class DummyGL implements QGL {
     
     private static QGL self = new DummyGL();
     
-    private DummyGL() {
+    protected DummyGL() {
         // singleton
     }
     
@@ -141,6 +142,12 @@ public class DummyGL implements QGL {
         switch (name) {
         case GL_EXTENSIONS:
             return "GL_ARB_multitexture";
+        case GL_VERSION:
+            return "2.0.0 Dummy";
+        case GL_VENDOR:
+            return "Dummy Cooperation";
+        case GL_RENDERER:
+            return "Dummy Renderer";
         default:
             return "";
         }
