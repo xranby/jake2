@@ -72,6 +72,7 @@ public abstract class JoglES1Driver extends JoglGL2ES1 implements GLDriver {
     }
 
     public void shutdown() {
+        deactivate();
         if(null != newtWin) {
             newtWin.shutdown();
         }
@@ -103,11 +104,7 @@ public abstract class JoglES1Driver extends JoglGL2ES1 implements GLDriver {
 
     public void endFrame() {
         newtWin.window.swapBuffers();
-        /**
-        final GLContext ctx = newtWin.window.getContext();
-        if ( null != ctx && GLContext.getCurrent() == ctx) {
-            ctx.release();
-        } */
+        // deactivate();
         newtWin.fpsCounter.tickFPS();
     }
 
@@ -136,6 +133,13 @@ public abstract class JoglES1Driver extends JoglGL2ES1 implements GLDriver {
             ctx.makeCurrent();
         }
     }
-
+    
+    protected void deactivate() {
+        final GLContext ctx = newtWin.window.getContext();
+        if ( null != ctx && GLContext.getCurrent() == ctx) {
+            ctx.release();
+        }        
+    }
+    
     // --------------------------------------------------------------------------    
 }
