@@ -23,8 +23,6 @@
         <pathelement location="lib/jogamp/gluegen-rt.jar"/>
         <pathelement location="lib/jogamp/jogl-all.jar"/>
         <pathelement location="lib/jogamp/joal.jar"/>
-        <pathelement location="lib/lwjgl/lwjgl.jar"/>
-        <pathelement location="lib/lwjgl/lwjgl_util.jar"/>
         <!-- pathelement location="${java.home}/lib/plugin.jar"/ -->
     </path>
     
@@ -68,27 +66,11 @@
     
     <!-- copy files -->
     <target name="copy">
-        <copy todir="${dist}/lib">
-            <fileset dir="lib/lwjgl">
+        <copy todir="${dist}/lib/jogamp">
+            <fileset dir="lib/jogamp">
                 <include name="*.jar"/>
             </fileset>
         </copy>
-        <copy todir="${dist}/lib/linux/lwjgl">
-            <fileset dir="lib/lwjgl/linux">
-                <include name="*"/>
-            </fileset>              
-        </copy>
-        <copy todir="${dist}/lib/windows/lwjgl">
-            <fileset dir="lib/lwjgl/windows">
-                <include name="*"/>
-            </fileset>              
-        </copy>
-        <copy todir="${dist}/lib/osx/lwjgl">
-            <fileset dir="lib/lwjgl/osx">
-                <include name="*"/>
-            </fileset>              
-        </copy>
-
         <copy todir="${dist}">
             <fileset dir="scripts">
                 <include name="Jake2*"/>
@@ -141,25 +123,12 @@
         </proguard -->
     </target>
     
-    <target name="patch" depends="copy">
-        <!-- performance patch for lwjgl -->
-        <javac destdir="${build}" optimize="off" debug="on" source="1.6">
-            <src path="lib/lwjgl/patch"/>
-            <include name="org/lwjgl/**"/>
-            <classpath refid="build.class.path"/>
-        </javac>
-        <!-- update original lwjgl.jar -->
-        <jar destfile="${dist}/lib/lwjgl.jar" basedir="${build}" update="true">
-            <include name="org/lwjgl/**"/>
-        </jar>
-    </target>
-    
     <!-- everything -->
     <target name="all" depends="installer,bindist,srcdist">
     </target>
 
     <!-- dist -->
-    <target name="dist" depends="jar,copy,patch">
+    <target name="dist" depends="jar,copy">
     </target>
         
     <!-- binary distribution -->
@@ -241,20 +210,6 @@
             </fileset>
         </copy>
 
-        <mkdir dir="webstart/lib/linux"/>
-        <jar destfile="webstart/lib/linux/lwjgl-native.jar" basedir="${dist}/lib/linux/lwjgl">
-            <include name="*.so"/>
-        </jar>
-        <mkdir dir="webstart/lib/osx"/>
-        <jar destfile="webstart/lib/osx/lwjgl-native.jar" basedir="${dist}/lib/osx/lwjgl">
-            <include name="liblwjgl.jnilib"/>
-            <include name="openal.dylib"/>
-        </jar>
-        <mkdir dir="webstart/lib/windows"/>
-        <jar destfile="webstart/lib/windows/lwjgl-native.jar" basedir="${dist}/lib/windows/lwjgl">
-            <include name="lwjgl.dll"/>
-            <include name="OpenAL32.dll"/>
-        </jar>
         <signjar keystore="${user.home}/bytonic" alias="bytonic" storepass="${bytonic.pass}">
             <fileset dir="webstart/lib">
                 <include name="**/*.jar"/>

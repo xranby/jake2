@@ -44,7 +44,6 @@
             	<include name="*"/>
             	<include name="lib/jake2.jar"/>
             	<exclude name="*.sh"/>
-            	<exclude name="*lwjgl.bat"/>
             </fileset>
         </pack>
         <pack name="Jake2" required="yes">
@@ -54,8 +53,6 @@
             	<include name="*"/>
             	<include name="lib/jake2.jar"/>
             	<exclude name="*.bat"/>
-            	<exclude name="*mac.sh"/>
-            	<exclude name="*lwjgl.sh"/>
             </fileset>
             <executable targetfile="$INSTALL_PATH/Jake2.sh"/>
         </pack>
@@ -72,91 +69,12 @@
             <executable targetfile="$INSTALL_PATH/Jake2_mac.sh"/>
         </pack>                
         
-        <pack name="jogl OpenGL library" required="yes">
+        <pack name="jogamp library" required="yes">
         	<description>default OpenGL library</description>
-        	<os family="windows"/>
-        	<fileset dir="lib" targetdir="$INSTALL_PATH/lib">
-        		<include name="windows/jogl*"/>
-        		<include name="jogl.jar"/>
+        	<fileset dir="lib/jogamp" targetdir="$INSTALL_PATH/lib/jogamp">      		
+        		<include name="*jar"/>
         	</fileset>
         </pack>
-        <pack name="jogl OpenGL library" required="yes">
-        	<description>default OpenGL library</description>
-			<os name="Linux"/>
-        	<fileset dir="lib" targetdir="$INSTALL_PATH/lib">      		
-        		<include name="linux/*jogl*"/>
-        		<include name="jogl.jar"/>
-        	</fileset>
-        </pack>
-        <pack name="jogl OpenGL library" required="yes">
-        	<description>default OpenGL library</description>
-			<os name="Mac OS X"/>
-        	<fileset dir="lib" targetdir="$INSTALL_PATH/lib">      		
-         		<include name="osx/*jogl*"/>
-        		<include name="jogl.jar"/>
-        	</fileset>
-        </pack>        
-               
-        <pack name="joal sound library" required="no">
-        	<description>default sound library</description>
-        	<os family="windows"/>
-        	<fileset dir="lib" targetdir="$INSTALL_PATH/lib">
-        		<include name="windows/joal*"/>
-        		<include name="windows/OpenAL*"/>
-        	</fileset>
-        </pack>
-        <pack name="joal sound library" required="no">
-        	<description>default sound library</description>
-        	<os name="Linux"/>
-        	<fileset dir="lib" targetdir="$INSTALL_PATH/lib">
-        		<include name="linux/*joal*"/>
-        		<include name="linux/*openal*"/>
-        	</fileset>
-        </pack>        
-        <pack name="joal sound library" required="no">
-        	<description>default sound library</description>
-        	<os name="Mac OS X"/>
-        	<fileset dir="lib" targetdir="$INSTALL_PATH/lib">
-        		<include name="osx/*joal*"/>
-        		<include name="osx/*openal*"/>
-        	</fileset>
-        </pack>
-        
-        <pack name="lwjgl library" required="no">
-        	<description>alternative OpenGL and sound driver</description>
-        	<os family="windows"/>
-        	<fileset dir="lib" targetdir="$INSTALL_PATH/lib">  		
-        		<include name="windows/lwjgl*"/>
-        		<include name="lwjgl*.jar"/>
-        	</fileset>
-        	<fileset dir="." targetdir="$INSTALL_PATH">
-        		<include name="*lwjgl.bat"/>
-        	</fileset>
-        </pack>
-        <pack name="lwjgl library" required="no">
-        	<description>alternative OpenGL and sound driver</description>
-        	<os name="Linux"/>
-        	<fileset dir="lib" targetdir="$INSTALL_PATH/lib">
-        		<include name="linux/lwjgl/*"/>
-        		<include name="lwjgl*.jar"/>
-        	</fileset>
-        	<fileset dir="." targetdir="$INSTALL_PATH">
-        		<include name="Jake2_lwjgl.sh"/>
-        	</fileset>
-        	<executable targetfile="$INSTALL_PATH/Jake2_lwjgl.sh"/>
-        </pack>
-        <pack name="lwjgl library" required="no">
-        	<description>alternative OpenGL and sound driver</description>
-        	<os name="Mac OS X"/>
-        	<fileset dir="lib" targetdir="$INSTALL_PATH/lib">
-        		<include name="osx/lwjgl/*"/>
-        		<include name="lwjgl*.jar"/>
-        	</fileset>
-        	<fileset dir="." targetdir="$INSTALL_PATH">
-        		<include name="Jake2_mac_lwjgl.sh"/>
-        	</fileset>
-        	<executable targetfile="$INSTALL_PATH/Jake2_mac_lwjgl.sh"/>
-        </pack>                
     </packs>
     
     <!-- native type="izpack" name="ShellLink.dll"/ -->

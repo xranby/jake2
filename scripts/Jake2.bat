@@ -1,4 +1,4 @@
 @echo off
 SET PATH=lib\windows;%PATH%
-SET CP=lib/jake2.jar;lib/jogl.jar;lib/joal.jar;lib/gluegen-rt.jar
-start javaw -Xmx100M -Dsun.java2d.noddraw=true -Djava.library.path=lib/windows -cp %CP% jake2.Jake2
+SET CP=lib/jogamp/gluegen-rt.jar;lib/jogamp/joal.jar;lib/jogamp/jogl-all.jar;lib/jake2.jar
+start javaw -Dsun.java2d.noddraw=true -cp %CP% jake2.Jake2
