@@ -60,7 +60,7 @@ public interface QGL extends QGLConst {
 
     void glDrawBuffer(int mode);
 
-    void glDrawElements(int mode, IntBuffer indices);
+    void glDrawElements(int mode, ShortBuffer indices);
 
     void glEnable(int cap);
 

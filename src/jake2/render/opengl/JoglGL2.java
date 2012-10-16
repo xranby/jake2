@@ -3,6 +3,7 @@ package jake2.render.opengl;
 
 import java.nio.*;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 public class JoglGL2 implements QGL {
@@ -102,8 +103,8 @@ public class JoglGL2 implements QGL {
         gl.glDrawBuffer(mode);
     }
 
-    public void glDrawElements(int mode, IntBuffer indices) {
-        gl.glDrawElements(mode, indices.limit(), GL_UNSIGNED_INT, indices);
+    public void glDrawElements(int mode, ShortBuffer indices) {
+        gl.glDrawElements(mode, indices.remaining(), GL.GL_UNSIGNED_SHORT, indices);
     }
 
     public void glEnable(int cap) {

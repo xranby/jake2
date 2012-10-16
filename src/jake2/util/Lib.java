@@ -353,6 +353,7 @@ public class Lib {
 	
 	public static final int SIZEOF_FLOAT = 4;
 	public static final int SIZEOF_INT = 4;
+	public static final int SIZEOF_SHORT = 2;
 	
 	public static FloatBuffer newFloatBuffer(int numElements) {
 	  ByteBuffer bb = newByteBuffer(numElements * SIZEOF_FLOAT);
@@ -362,13 +363,21 @@ public class Lib {
 	  ByteBuffer bb = newByteBuffer(numElements * SIZEOF_FLOAT, order);
 	  return bb.asFloatBuffer();
 	}
-	public static IntBuffer newIntBuffer(int numElements) {
-	  ByteBuffer bb = newByteBuffer(numElements * SIZEOF_INT);
-	  return bb.asIntBuffer();
+        public static IntBuffer newIntBuffer(int numElements) {
+          ByteBuffer bb = newByteBuffer(numElements * SIZEOF_INT);
+          return bb.asIntBuffer();
+        }
+        public static IntBuffer newIntBuffer(int numElements, ByteOrder order) {
+          ByteBuffer bb = newByteBuffer(numElements * SIZEOF_INT, order);
+          return bb.asIntBuffer();
+        }
+	public static ShortBuffer newShortBuffer(int numElements) {
+	  ByteBuffer bb = newByteBuffer(numElements * SIZEOF_SHORT);
+	  return bb.asShortBuffer();
 	}
-	public static IntBuffer newIntBuffer(int numElements, ByteOrder order) {
-	  ByteBuffer bb = newByteBuffer(numElements * SIZEOF_INT, order);
-	  return bb.asIntBuffer();
+	public static ShortBuffer newShortBuffer(int numElements, ByteOrder order) {
+	  ByteBuffer bb = newByteBuffer(numElements * SIZEOF_SHORT, order);
+	  return bb.asShortBuffer();
 	}
 	public static ByteBuffer newByteBuffer(int numElements) {
 	  ByteBuffer bb = ByteBuffer.allocateDirect(numElements);

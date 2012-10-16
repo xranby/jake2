@@ -1287,12 +1287,12 @@ public abstract class Model extends Surf {
 	 */
 	static final int MODEL_BUFFER_SIZE = 50000;
 	static FloatBuffer globalModelTextureCoordBuf = Lib.newFloatBuffer(MODEL_BUFFER_SIZE * 2);
-	static IntBuffer globalModelVertexIndexBuf = Lib.newIntBuffer(MODEL_BUFFER_SIZE);
+	static ShortBuffer globalModelVertexIndexBuf = Lib.newShortBuffer(MODEL_BUFFER_SIZE);
 	
 	void precompileGLCmds(qfiles.dmdl_t model) {
 		model.textureCoordBuf = globalModelTextureCoordBuf.slice();
 		model.vertexIndexBuf = globalModelVertexIndexBuf.slice();
-		Vector tmp = new Vector();
+		final Vector<Integer> tmp = new Vector<Integer>();
 			
 		int count = 0;
 		int[] order = model.glCmds;
@@ -1320,7 +1320,7 @@ public abstract class Model extends Surf {
 				// texture coordinates come from the draw list
 				globalModelTextureCoordBuf.put(Float.intBitsToFloat(order[orderIndex + 0]));
 				globalModelTextureCoordBuf.put(Float.intBitsToFloat(order[orderIndex + 1]));
-				globalModelVertexIndexBuf.put(order[orderIndex + 2]);
+				globalModelVertexIndexBuf.put( (short) ( 0x0000FFFF & order[orderIndex + 2] ) );
 
 				orderIndex += 3;
 			} while (--count != 0);
@@ -1329,7 +1329,7 @@ public abstract class Model extends Surf {
 		int size = tmp.size();
 			
 		model.counts = new int[size];
-		model.indexElements = new IntBuffer[size];
+		model.indexElements = new ShortBuffer[size];
 			
 		count = 0;
 		int pos = 0;

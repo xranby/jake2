@@ -172,7 +172,7 @@ public class JoglGL2ES1 implements QGL {
         }
     }
 
-    public void glDrawElements(int mode, IntBuffer indices) {
+    public void glDrawElements(int mode, ShortBuffer indices) {
         switch(mode) {
             case GL_QUAD_STRIP:
                 mode=GL.GL_TRIANGLE_STRIP;
@@ -184,11 +184,12 @@ public class JoglGL2ES1 implements QGL {
         final int idxLen = indices.remaining();
         if ( GL_QUADS == mode && !gl.isGL2() ) {
             final int idx0 = indices.position();
+            final ShortBuffer b = (ShortBuffer) indices;
             for (int j = 0; j < idxLen; j++) {
-                gl.glDrawArrays(GL.GL_TRIANGLE_FAN, (int)(0xffffffff & indices.get(idx0+j)), 4);
+                gl.glDrawArrays(GL.GL_TRIANGLE_FAN, (int)(0x0000ffff & b.get(idx0+j)), 4);
             }
         } else {
-            gl.glDrawElements(mode, idxLen, GL_UNSIGNED_INT, indices);
+            gl.glDrawElements(mode, idxLen, GL.GL_UNSIGNED_SHORT, indices);
         }
     }
 

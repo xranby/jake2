@@ -36,6 +36,7 @@ import jake2.util.Math3D;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.nio.ShortBuffer;
 
 /**
  * Mesh
@@ -228,7 +229,7 @@ public abstract class Mesh extends Light {
 	int pos = 0;
 	int[] counts = paliashdr.counts;
 
-	IntBuffer srcIndexBuf = null;
+	ShortBuffer srcIndexBuf = null;
 
 	FloatBuffer dstTextureCoords = textureArrayBuf;
 	FloatBuffer srcTextureCoords = paliashdr.textureCoordBuf;

@@ -102,7 +102,7 @@ public class CountGL implements QGL {
         ++count;
     }
 
-    public void glDrawElements(int mode, IntBuffer indices) {
+    public void glDrawElements(int mode, ShortBuffer indices) {
         ++count;
     }
 

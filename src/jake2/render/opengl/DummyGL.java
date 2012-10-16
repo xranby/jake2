@@ -1,8 +1,6 @@
 package jake2.render.opengl;
 
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
+import java.nio.*;
 
 public class DummyGL implements QGL {
     
@@ -101,7 +99,7 @@ public class DummyGL implements QGL {
         // do nothing
     }
 
-    public void glDrawElements(int mode, IntBuffer indices) {
+    public void glDrawElements(int mode, ShortBuffer indices) {
         // do nothing
     }
 
