@@ -15,9 +15,9 @@ public class JoglGL2ES1 implements QGL {
 
     JoglGL2ES1() {
         // singleton
-        ims = ImmModeSink.createFixed(4*8, 
+        ims = ImmModeSink.createFixed(4, 
                 3, GL.GL_FLOAT,  // vertex
-                4, GL.GL_FLOAT,  // color
+                0, 0,            // color
                 0, 0,            // normal
                 2, GL.GL_FLOAT,  // texture
                 GL.GL_STATIC_DRAW);
@@ -181,7 +181,15 @@ public class JoglGL2ES1 implements QGL {
                 mode=GL.GL_TRIANGLE_FAN;
                 break;
         }
-        gl.glDrawElements(mode, indices.limit(), GL_UNSIGNED_INT, indices);
+        final int idxLen = indices.remaining();
+        if ( GL_QUADS == mode && !gl.isGL2() ) {
+            final int idx0 = indices.position();
+            for (int j = 0; j < idxLen; j++) {
+                gl.glDrawArrays(GL.GL_TRIANGLE_FAN, (int)(0xffffffff & indices.get(idx0+j)), 4);
+            }
+        } else {
+            gl.glDrawElements(mode, idxLen, GL_UNSIGNED_INT, indices);
+        }
     }
 
     public void glEnable(int cap) {
