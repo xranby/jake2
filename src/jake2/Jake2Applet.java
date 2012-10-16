@@ -33,7 +33,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JApplet;
 
-import netscape.javascript.*;
+// import netscape.javascript.*;
 
 /**
  * Jake2 is the main class of Quake2 for Java.
@@ -41,7 +41,7 @@ import netscape.javascript.*;
 @SuppressWarnings("serial")
 public class Jake2Applet extends JApplet {
 
-    private JSObject self;
+    // FIXME private JSObject self;
     private volatile boolean shouldShutDown;
     private boolean shutDown;
     private Object shutDownLock = new Object();
@@ -85,6 +85,7 @@ public class Jake2Applet extends JApplet {
             Qcommon.applet = Jake2Applet.this;
             Qcommon.sizeChangeListener = new SizeChangeListener() {
                     public void sizeChanged(int width, int height) {
+                        /** FIXME
                         try {
                             if (self == null) {
                                 JSObject win = JSObject.getWindow(Jake2Applet.this);
@@ -96,7 +97,7 @@ public class Jake2Applet extends JApplet {
                             self.setMember("height", new Integer(height));
                         } catch (Exception e) {
                             e.printStackTrace();
-                        }
+                        } */
                     }
                 };
 

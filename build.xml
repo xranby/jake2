@@ -25,7 +25,7 @@
         <pathelement location="lib/jogamp/joal.jar"/>
         <pathelement location="lib/lwjgl/lwjgl.jar"/>
         <pathelement location="lib/lwjgl/lwjgl_util.jar"/>
-        <pathelement location="${java.home}/lib/plugin.jar"/>
+        <!-- pathelement location="${java.home}/lib/plugin.jar"/ -->
     </path>
     
     <!-- usage -->
@@ -123,7 +123,7 @@
             <include name="mirrors"/>
         </jar>
         <property name="classes" value="${java.home}/lib/rt.jar"/>
-        <property name="plugin" value="${java.home}/lib/plugin.jar"/>
+        <!-- property name="plugin" value="${java.home}/lib/plugin.jar"/ -->
         <condition property="classes" value="${java.home}/../Classes/classes.jar">
             <os name="Mac OS X"/>
         </condition>         
