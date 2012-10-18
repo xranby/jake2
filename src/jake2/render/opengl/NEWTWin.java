@@ -23,6 +23,7 @@ import javax.media.opengl.GLProfile;
 
 import jogamp.opengl.FPSCounterImpl;
 
+import com.jogamp.common.os.Platform;
 import com.jogamp.newt.NewtFactory;
 import com.jogamp.newt.Screen;
 import com.jogamp.newt.ScreenMode;
@@ -77,6 +78,7 @@ public class NEWTWin {
      * @return enum Base.rserr_t
      */
     public int setMode(GLProfile glp, Dimension dim, int mode, boolean fullscreen, String driverName) {
+        final boolean isARM = Platform.CPUFamily.ARM == Platform.getCPUFamily();
 
         final Dimension newDim = new Dimension();
 
@@ -111,7 +113,13 @@ public class NEWTWin {
         }
         
         if(null == window) {
-            window = GLWindow.create(screen, new GLCapabilities(glp));
+            final GLCapabilities caps = new GLCapabilities(glp);
+            /*** FIXME ..
+            caps.setRedBits(5);
+            caps.setGreenBits(6);
+            caps.setBlueBits(5);
+            caps.setAlphaBits(0); */
+            window = GLWindow.create(screen, caps);
             window.setTitle("Jake2 ("+driverName+"-newt-"+glp.getName().toLowerCase()+")");
         }
 
@@ -194,11 +202,14 @@ public class NEWTWin {
         window.requestFocus();
         window.display(); // force GL resource validation
         
+        VID.Printf(Defines.PRINT_ALL, "...reques GLCaps "+window.getRequestedCapabilities()+'\n');
+        VID.Printf(Defines.PRINT_ALL, "...chosen GLCaps "+window.getChosenGLCapabilities()+'\n');
+        
         if(screenRemRef) {
             screen.removeReference();
         }
 
-        fpsCounter.setUpdateFPSFrames(5*60, System.err);
+        fpsCounter.setUpdateFPSFrames(isARM ? 60 : 4*60, System.err);
 
         return Base.rserr_ok;
     }
