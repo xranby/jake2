@@ -34,6 +34,7 @@ public class JoglGL2ES1 implements QGL {
                     0, 0,                   // normal
                     2, GL.GL_FLOAT,         // texture
                     GL.GL_STATIC_DRAW);
+            ims.setResizeElementCount(512);
         }
     }
 
@@ -170,13 +171,14 @@ public class JoglGL2ES1 implements QGL {
                 mode=GL.GL_TRIANGLE_FAN;
                 break;
         }
+        /** No GL_QUADS used
         if ( GL_QUADS == mode && !gl.isGL2() ) {
             for (int j = first; j < count - 3; j += 4) {
                 gl.glDrawArrays(GL.GL_TRIANGLE_FAN, j, 4);
             }
-        } else {
+        } else { */
             gl.glDrawArrays(mode, first, count);
-        }
+        // }
     }
 
     public void glDrawBuffer(int mode) {
@@ -196,15 +198,16 @@ public class JoglGL2ES1 implements QGL {
                 break;
         }
         final int idxLen = indices.remaining();
+        /** No GL_QUADS used
         if ( GL_QUADS == mode && !gl.isGL2() ) {
             final int idx0 = indices.position();
             final ShortBuffer b = (ShortBuffer) indices;
             for (int j = 0; j < idxLen; j++) {
                 gl.glDrawArrays(GL.GL_TRIANGLE_FAN, (int)(0x0000ffff & b.get(idx0+j)), 4);
             }
-        } else {
+        } else { */
             gl.glDrawElements(mode, idxLen, GL.GL_UNSIGNED_SHORT, indices);
-        }
+        // }
     }
 
     public void glEnable(int cap) {
@@ -236,13 +239,20 @@ public class JoglGL2ES1 implements QGL {
         gl.glGetFloatv(pname, params);
     }
 
+    private static final String GL_EXT_point_parameters = "GL_EXT_point_parameters";
+    
     public String glGetString(int name) {
         if( GL.GL_EXTENSIONS == name ) {
             StringBuilder sb = new StringBuilder();
             sb.append(gl.glGetString(name));
             sb.append(" GL_ARB_multitexture");
             if(hasPointExt) {
-                sb.append(" GL_EXT_point_parameters");
+                sb.append(" ").append(GL_EXT_point_parameters);
+            } else {
+                int p0;
+                while( 0 <= ( p0 = sb.indexOf(GL_EXT_point_parameters) ) ) { 
+                    sb = sb.replace(p0, p0+GL_EXT_point_parameters.length(), "");
+                }
             }
             return sb.toString();
         }
