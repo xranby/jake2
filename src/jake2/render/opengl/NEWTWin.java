@@ -48,7 +48,7 @@ public class NEWTWin {
 
     public ScreenMode findDisplayMode(DimensionImmutable dim) {
         final List<ScreenMode> sml = ScreenModeUtil.filterByResolution(screen.getScreenModes(), dim);
-        if(sml.size() == 0) {
+        if(null == sml || sml.size() == 0) {
             return oldDisplayMode;
         }
         return sml.get(0);
@@ -94,6 +94,9 @@ public class NEWTWin {
         final boolean screenRemRef;
         if(null == screen) {
             screen = NewtFactory.createScreen(NewtFactory.createDisplay(null), 0);
+            screen.addReference(); // trigger native creation
+            screenRemRef = true;
+        } else if( !screen.isNativeValid() ) {
             screen.addReference(); // trigger native creation
             screenRemRef = true;
         } else {
