@@ -514,7 +514,6 @@ public abstract class Main extends Base {
      * R_DrawParticles
      */
     void R_DrawParticles() {
-
         if (gl_ext_pointparameters.value != 0.0f && qglPointParameterfEXT) {
 
             //gl.gl.glEnableClientState(GL_VERTEX_ARRAY);

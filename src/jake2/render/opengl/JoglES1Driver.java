@@ -42,7 +42,7 @@ public abstract class JoglES1Driver extends JoglGL2ES1 implements GLDriver {
     protected static GLProfile glp = GLProfile.get(GLProfile.GL2ES1); // exception if n/a is desired
     
     protected JoglES1Driver() {
-        // singleton
+        super(true);
     }
 
     private NEWTWin newtWin = null;

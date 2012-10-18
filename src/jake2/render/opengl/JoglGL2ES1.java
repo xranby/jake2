@@ -9,22 +9,32 @@ import com.jogamp.opengl.util.ImmModeSink;
 
 public class JoglGL2ES1 implements QGL {
 
+    private final boolean hasPointExt;
     private GL2ES1 gl;
-    protected final ImmModeSink ims;
+    protected ImmModeSink ims;
     private boolean inBlock = false; // within begin/end
 
-    JoglGL2ES1() {
-        // singleton
-        ims = ImmModeSink.createFixed(4, 
-                3, GL.GL_FLOAT,  // vertex
-                0, 0,            // color
-                0, 0,            // normal
-                2, GL.GL_FLOAT,  // texture
-                GL.GL_STATIC_DRAW);
+    JoglGL2ES1(boolean hasPointExt) {
+        this.hasPointExt = hasPointExt;
     }
 
     void setGL(GL2ES1 gl) {
         this.gl = gl;
+        if(hasPointExt) {
+            ims = ImmModeSink.createFixed(4,
+                    3, GL.GL_FLOAT,  // vertex
+                    0, 0,            // color
+                    0, 0,            // normal
+                    2, GL.GL_FLOAT,  // texture
+                    GL.GL_STATIC_DRAW);
+        } else {
+            ims = ImmModeSink.createFixed(6000,
+                    3, GL.GL_FLOAT,         // vertex
+                    4, GL.GL_UNSIGNED_BYTE, // color (for particle simulation)
+                    0, 0,                   // normal
+                    2, GL.GL_FLOAT,         // texture
+                    GL.GL_STATIC_DRAW);
+        }
     }
 
     public void glBegin(int mode) {
@@ -48,9 +58,13 @@ public class JoglGL2ES1 implements QGL {
     }
 
     public void glColor3ub(byte red, byte green, byte blue) {
-        glColor4ub(red, green, blue, (byte) 255);
+        if(inBlock) {
+            ims.glColor3ub(red, green, blue);
+        } else {
+            gl.glColor4ub(red, green, blue, (byte)255);
+        }
     }
-
+    
     public void glColor4f(float red, float green, float blue, float alpha) {
         if(inBlock) {
             ims.glColor4f(red, green, blue, alpha);
@@ -60,11 +74,11 @@ public class JoglGL2ES1 implements QGL {
     }
 
     public void glColor4ub(byte red, byte green, byte blue, byte alpha) {
-        final float r = (red   & 255) / 255.0f;
-        final float g = (green & 255) / 255.0f;
-        final float b = (blue  & 255) / 255.0f;
-        final float a = (alpha & 255) / 255.0f;
-        glColor4f(r, g, b, a);
+        if(inBlock) {
+            ims.glColor4ub(red, green, blue, alpha);
+        } else {
+            gl.glColor4ub(red, green, blue, alpha);
+        }
     }
 
     public void glTexCoord2f(float s, float t) {
@@ -227,7 +241,7 @@ public class JoglGL2ES1 implements QGL {
             StringBuilder sb = new StringBuilder();
             sb.append(gl.glGetString(name));
             sb.append(" GL_ARB_multitexture");
-            if( gl.isGLES1() ) {
+            if(hasPointExt) {
                 sb.append(" GL_EXT_point_parameters");
             }
             return sb.toString();
