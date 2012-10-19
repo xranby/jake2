@@ -68,8 +68,6 @@ final class JoglES2Renderer extends JoglES2Driver implements refexport_t, Ref {
         // init the OpenGL drivers
         impl.setGLDriver(this);
         
-        // Cvar.Set("gl_clear", "1"); // FIXME
-        
         // pre init, reads Cvar's
         if (!impl.R_Init(vid_xpos, vid_ypos)) return false;
         // activates the OpenGL context        

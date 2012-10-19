@@ -7,19 +7,38 @@ distributed under the terms of the GPL (see LICENSE).
 The port was done completely in Java. No native libraries are used for the
 game functionality. We use the jogl Java OpenGL bindings for graphics rendering
 and Java OpenAL (joal) for sound. Since 0.9.4 release, Jake2 comes with an lwjgl driver
-as an alternative for the jogl/joal combination.
+as an alternative for the jogl/joal combination, which has been dropped in the JOGL2 port.
 
-Jake2 is still under development. Send bug reports and feedback to
-jake2@bytonic.de.
+Jake2 is still under development. Send bug reports and feedback to jake2@bytonic.de.
+In regards to the JOGL2 port, please use the JogAmp forum: http://forum.jogamp.org/.
 
 Currently Jake2 supports Linux, Windows2000/XP and Mac OS X. The Jake2 dedicated
 server runs on every Java supported plattform.
+The JOGL2 port runs on all platforms supported by JogAmp, 
+incl. embedded ARM devices w/ GNU/Linux (Pandaboard, Rasperry Pi, Android devices etc.).
 
 requirements:
 400 MHz CPU
 Geforce2 MX or better graphics accelerator
-at least JRE 1.4 to run Jake2
-at least JDK 1.5 to build Jake2 from source
+at least JRE 1.6 to run Jake2
+at least [open]JDK 1.6 to build Jake2 from source
+
+JOGL2 Port
+==========
+
+JOGL Renderer can be set via 'vid_ref', i.e. '+set vid_ref jogles2'
+  - jogles1 ES1 renderer, may use GL2ES1 w/ 'jogl_gl2es1 1'
+  - jogles2 ES1 renderer, may use GL2ES2 w/ 'jogl_gl2es2 1'
+  - joglgl2 GL2 renderer, maybe disabled w/ 'jogl_gl2 0'
+  - jogldummy NOP GL renderer to measure performance w/o GL costs
+
+Special GLProfile selection flags:
+  - jogl_gl2    0  disable joglgl2, default enabled '1'
+  - jogl_gl2es1 1  allow desktop GL2ES1 for jogles1 renderer, default disabled '0'
+  - jogl_gl2es2 1  allow desktop GL2ES2 for jogles2 renderer, default disabled '0'
+
+Special drawable surface flags:
+  - jogl_rgb565 1  requesting a RGB565 surface, otherwise request default RGB888 surface
 
 Installation
 ------------
@@ -53,9 +72,9 @@ Jake2 sources from CVS.
 --------------------
 
 Jake2 uses:
-jogl     OpenGL bindings                https://jogl.dev.java.net
-joal     OpenAL bindings                https://joal.dev.java.net
-lwjgl    Light Weight Java Game Library http://www.lwjgl.org
+jogl     OpenGL bindings                https://jogamp.org/jogl/
+joal     OpenAL bindings                https://jogamp.org/joal/
+lwjgl    Light Weight Java Game Library http://www.lwjgl.org    (removed in JOGL2 port)
 openal   Audio library                  http://www.openal.org
 izpack	 Installer	                    http://www.izforge.com/
 
@@ -64,6 +83,7 @@ ant      build tool                     http://ant.apache.org
 xerces   XML library                    http://xml.apache.org
 
 Use <jake2@bytonic.de> for bug reports and feedback.
+In regards to the JOGL2 port, please use the JogAmp forum: http://forum.jogamp.org/.
 
 have fun!
 
@@ -76,3 +96,4 @@ Rene Stoeckel  <rst@bytonic.de>
 Contributors
 ------------
 David Sanders       lwjgl support
+Sven Gothel         JOGL2 port

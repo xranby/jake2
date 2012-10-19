@@ -139,7 +139,7 @@ public class DummyGL implements QGL {
     public String glGetString(int name) {
         switch (name) {
         case GL_EXTENSIONS:
-            return "GL_ARB_multitexture";
+            return "GL_ARB_multitexture GL_EXT_point_parameters";
         case GL_VERSION:
             return "2.0.0 Dummy";
         case GL_VENDOR:

@@ -9,12 +9,15 @@ import jake2.Defines;
 import jake2.Globals;
 import jake2.SizeChangeListener;
 import jake2.client.VID;
+import jake2.game.cvar_t;
 import jake2.qcommon.Cbuf;
+import jake2.qcommon.Cvar;
 import jake2.render.Base;
 import jake2.sys.NEWTKBD;
 
 import java.util.List;
 
+import javax.media.nativewindow.CapabilitiesChooser;
 import javax.media.nativewindow.util.Dimension;
 import javax.media.nativewindow.util.DimensionImmutable;
 import javax.media.nativewindow.util.SurfaceSize;
@@ -32,6 +35,7 @@ import com.jogamp.newt.event.WindowEvent;
 import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.newt.util.MonitorMode;
 import com.jogamp.newt.util.ScreenModeUtil;
+import com.jogamp.opengl.GenericGLCapabilitiesChooser;
 
 public class NEWTWin {
     ScreenMode oldDisplayMode = null;
@@ -117,12 +121,18 @@ public class NEWTWin {
         
         if(null == window) {
             final GLCapabilities caps = new GLCapabilities(glp);
-            /*** FIXME ..
-            caps.setRedBits(5);
-            caps.setGreenBits(6);
-            caps.setBlueBits(5);
-            caps.setAlphaBits(0); */
+            CapabilitiesChooser chooser = null; // default
+            {
+                final cvar_t v = Cvar.Get("jogl_rgb565", "0", 0);
+                if( v.value != 0f ) {
+                    caps.setRedBits(5);
+                    caps.setGreenBits(6);
+                    caps.setBlueBits(5);
+                    chooser = new GenericGLCapabilitiesChooser(); // don't trust native GL-TK chooser
+                }
+            }
             window = GLWindow.create(screen, caps);
+            window.setCapabilitiesChooser(chooser);
             window.setTitle("Jake2 ("+driverName+"-newt-"+glp.getName().toLowerCase()+")");
         }
 

@@ -39,7 +39,7 @@ public class Renderer {
     static RenderAPI fastRenderer = new jake2.render.fast.Misc();
     static RenderAPI basicRenderer = new jake2.render.basic.Misc();
 
-    static Vector drivers = new Vector(3);
+    static Vector<Ref> drivers = new Vector<Ref>(4);
 
     static {
         try {
@@ -59,16 +59,16 @@ public class Renderer {
                 // t.printStackTrace();
             }
             try {
-                Class.forName("javax.media.opengl.GL2ES1");
-                Class.forName("jake2.render.JoglES1Renderer");
+                Class.forName("javax.media.opengl.GL2ES2");
+                Class.forName("jake2.render.JoglES2Renderer");
             } catch (Throwable t) {
                 // ignore the new jogl driver if runtime not in classpath
                 System.err.println("Catched exception: "+t.getMessage());
                 // t.printStackTrace();
             }
             try {
-                Class.forName("javax.media.opengl.GL2ES2");
-                Class.forName("jake2.render.JoglES2Renderer");
+                Class.forName("javax.media.opengl.GL2ES1");
+                Class.forName("jake2.render.JoglES1Renderer");
             } catch (Throwable t) {
                 // ignore the new jogl driver if runtime not in classpath
                 System.err.println("Catched exception: "+t.getMessage());
@@ -109,7 +109,7 @@ public class Renderer {
         Ref driver = null;
         int count = drivers.size();
         for (int i = 0; i < count; i++) {
-            driver = (Ref) drivers.get(i);
+            driver = drivers.get(i);
             if (driver.getName().equals(driverName)) {
                 return driver.GetRefAPI((fast) ? fastRenderer : basicRenderer);
             }
@@ -119,13 +119,11 @@ public class Renderer {
     }
 
     public static String getDefaultName() {
-        return (drivers.isEmpty()) ? null : ((Ref) drivers.firstElement())
-                .getName();
+        return (drivers.isEmpty()) ? null : drivers.firstElement().getName();
     }
 
     public static String getPreferedName() {
-        return (drivers.isEmpty()) ? null : ((Ref) drivers.lastElement())
-                .getName();
+        return (drivers.isEmpty()) ? null : drivers.lastElement().getName();
     }
 
     public static String[] getDriverNames() {
@@ -136,7 +134,7 @@ public class Renderer {
         int count = drivers.size();
         String[] names = new String[count];
         for (int i = 0; i < count; i++) {
-            names[i] = ((Ref) drivers.get(i)).getName();
+            names[i] = drivers.get(i).getName();
         }
         return names;
     }

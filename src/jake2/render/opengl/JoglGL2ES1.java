@@ -1,9 +1,10 @@
 package jake2.render.opengl;
 
-
 import java.nio.*;
 
-import javax.media.opengl.*;
+import javax.media.opengl.GL;
+import javax.media.opengl.GL2ES1;
+import javax.media.opengl.GLException;
 
 import com.jogamp.opengl.util.ImmModeSink;
 

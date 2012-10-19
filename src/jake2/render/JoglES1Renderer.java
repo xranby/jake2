@@ -29,7 +29,6 @@ import javax.media.nativewindow.util.Dimension;
 import jake2.Defines;
 import jake2.client.refdef_t;
 import jake2.client.refexport_t;
-import jake2.qcommon.Cvar;
 import jake2.render.opengl.JoglES1Driver;
 import jake2.sys.NEWTKBD;
 import jake2.sys.KBD;
@@ -69,8 +68,6 @@ final class JoglES1Renderer extends JoglES1Driver implements refexport_t, Ref {
         // init the OpenGL drivers
         impl.setGLDriver(this);
         
-        // Cvar.Set("gl_clear", "1"); // FIXME
-                
         // pre init, reads Cvar's
         if (!impl.R_Init(vid_xpos, vid_ypos)) {
             return false;

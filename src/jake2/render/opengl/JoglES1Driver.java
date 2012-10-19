@@ -25,6 +25,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 package jake2.render.opengl;
 
+import jake2.game.cvar_t;
+import jake2.qcommon.Cvar;
 import jake2.qcommon.xcommand_t;
 import jake2.render.Base;
 
@@ -38,8 +40,16 @@ import com.jogamp.newt.ScreenMode;
  */
 public abstract class JoglES1Driver extends JoglGL2ES1 implements GLDriver {
 
-    // protected static GLProfile glp = GLProfile.get(GLProfile.GLES1); // exception if n/a is desired
-    protected static GLProfile glp = GLProfile.get(GLProfile.GL2ES1); // exception if n/a is desired
+    protected static final GLProfile glp;    
+    static {
+        // exception if GLProfile is n/a is desired
+        cvar_t v = Cvar.Get("jogl_gl2es1", "0", 0);
+        if( v.value != 0f ) {
+            glp = GLProfile.getGL2ES1();
+        } else {
+            glp = GLProfile.get(GLProfile.GLES1);
+        }
+    }
     
     protected JoglES1Driver() {
         super(true);
