@@ -25,6 +25,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 package jake2.client;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
 import jake2.Defines;
 import jake2.Globals;
 import jake2.game.Cmd;
@@ -486,22 +490,24 @@ public class VID extends Globals {
 	};
 
 	static void initModeList() {
-		ScreenMode[] modes = re.getModeList();
-		fs_resolutions = new String[modes.length];
-		fs_modes = new vidmode_t[modes.length];
-		for (int i = 0; i < modes.length; i++) {
-		    final ScreenMode sm = modes[i];
+	        final List<ScreenMode> modes = re.getModeList();
+                final ArrayList<String> fs_resolutions_list = new ArrayList<String>();
+                final ArrayList<vidmode_t> fs_modes_list = new ArrayList<vidmode_t>();
+                final HashSet<DimensionImmutable> resSet = new HashSet<DimensionImmutable>();
+		for (int i = 0; i < modes.size(); i++) {
+		    final ScreenMode sm = modes.get(modes.size() - 1 - i); // reverse order: low -> high res.
                     final MonitorMode mm = sm.getMonitorMode();
                     final SurfaceSize ss = mm.getSurfaceSize();
                     final DimensionImmutable m = ss.getResolution();
-                    final StringBuffer sb = new StringBuffer();
+                    if( resSet.add(m) ) {
+                        final StringBuffer sb = new StringBuffer();
 			sb.append('[');
 			sb.append(m.getWidth());
 			sb.append(' ');
 			sb.append(m.getHeight());
 			while (sb.length() < 10) sb.append(' ');
 			sb.append(']');
-			fs_resolutions[i] = sb.toString();
+			fs_resolutions_list.add(sb.toString());
 			sb.setLength(0);
 			sb.append("Mode ");
 			sb.append(i);
@@ -509,8 +515,13 @@ public class VID extends Globals {
 			sb.append(m.getWidth());
 			sb.append('x');
 			sb.append(m.getHeight());
-			fs_modes[i] = new vidmode_t(sb.toString(), m.getWidth(), m.getHeight(), i);
+			fs_modes_list.add(new vidmode_t(sb.toString(), m.getWidth(), m.getHeight(), i));
+                    }
 		}
+                fs_resolutions = new String[fs_resolutions_list.size()];
+                fs_modes = new vidmode_t[fs_modes_list.size()];
+                fs_resolutions_list.toArray(fs_resolutions);
+                fs_modes_list.toArray(fs_modes);
 	}
 	
 	private static void initRefs() {

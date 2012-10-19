@@ -25,6 +25,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 package jake2.render.opengl;
 
+import java.util.List;
+
 import jake2.qcommon.xcommand_t;
 import jake2.render.Base;
 
@@ -49,7 +51,7 @@ public abstract class JoglDummyDriver extends DummyGL implements GLDriver {
 
     public abstract String getName();
     
-    public ScreenMode[] getModeList() {
+    public List<ScreenMode> getModeList() {
         if(null == newtWin) {
             throw new RuntimeException("NEWTWin not yet initialized.");
         }
@@ -62,7 +64,6 @@ public abstract class JoglDummyDriver extends DummyGL implements GLDriver {
         }
         int res = newtWin.setMode(glp, dim, mode, fullscreen, getName());
         if( Base.rserr_ok == res ) {
-            activate();
             init(0, 0);
             
             return Base.rserr_ok;
@@ -71,7 +72,6 @@ public abstract class JoglDummyDriver extends DummyGL implements GLDriver {
     }
 
     public void shutdown() {
-        deactivate();
         if(null != newtWin) {
             newtWin.shutdown();
         }
@@ -98,7 +98,7 @@ public abstract class JoglDummyDriver extends DummyGL implements GLDriver {
     }
 
     public void beginFrame(float camera_separation) {
-        activate();
+        activateGLContext();
     }
 
     public void endFrame() {
@@ -126,18 +126,12 @@ public abstract class JoglDummyDriver extends DummyGL implements GLDriver {
         callback.execute();
     }
 
-    protected void activate() {
-        final GLContext ctx = newtWin.window.getContext();
-        if ( null != ctx && GLContext.getCurrent() != ctx ) {                
-            ctx.makeCurrent();
-        }
+    protected final void activateGLContext() {
+        newtWin.activateGLContext();        
     }
 
-    protected void deactivate() {
-        final GLContext ctx = newtWin.window.getContext();
-        if ( null != ctx && GLContext.getCurrent() == ctx) {
-            ctx.release();
-        }        
+    protected final void deactivateGLContext() {
+        newtWin.activateGLContext();        
     }
     
     // --------------------------------------------------------------------------    

@@ -7,6 +7,9 @@
  
 package jake2.render;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.media.nativewindow.util.Dimension;
 
 import com.jogamp.newt.ScreenMode;
@@ -170,8 +173,8 @@ public class DummyRenderer implements refexport_t {
 	/* (non-Javadoc)
 	 * @see jake2.client.refexport_t#getModeList()
 	 */
-	public ScreenMode[] getModeList() {
-		return null;
+	public List<ScreenMode> getModeList() {
+		return new ArrayList<ScreenMode>();
 	}
 
 	/* (non-Javadoc)

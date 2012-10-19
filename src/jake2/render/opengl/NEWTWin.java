@@ -22,6 +22,7 @@ import javax.media.nativewindow.util.Dimension;
 import javax.media.nativewindow.util.DimensionImmutable;
 import javax.media.nativewindow.util.SurfaceSize;
 import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLContext;
 import javax.media.opengl.GLProfile;
 
 import jogamp.opengl.FPSCounterImpl;
@@ -43,16 +44,13 @@ public class NEWTWin {
     volatile GLWindow window = null;
     final FPSCounterImpl fpsCounter = new FPSCounterImpl();
 
-    public ScreenMode[] getModeList() {
-        final List<ScreenMode> sml = screen.getScreenModes();
-        ScreenMode[] sma = new ScreenMode[sml.size()];
-        sml.toArray(sma);
-        return sma;
+    public List<ScreenMode> getModeList() {
+        return screen.getScreenModes();
     }
 
     public ScreenMode findDisplayMode(DimensionImmutable dim) {
         final List<ScreenMode> sml = ScreenModeUtil.filterByResolution(screen.getScreenModes(), dim);
-        if(null == sml || sml.size() == 0) {
+        if(sml.size() == 0) {
             return oldDisplayMode;
         }
         return sml.get(0);
@@ -86,25 +84,13 @@ public class NEWTWin {
 
         final Dimension newDim = new Dimension();
 
-        VID.Printf(Defines.PRINT_ALL, "Initializing OpenGL display\n");
+        VID.Printf(Defines.PRINT_ALL, "Initializing OpenGL display for profile "+glp+"\n");
 
-        VID.Printf(Defines.PRINT_ALL, "...setting mode " + mode + ":");
-
-        /**
-                if (Globals.appletMode && container == null) {
-                    container = (Container) Globals.applet;
-                } */
-
-        final boolean screenRemRef;
         if(null == screen) {
             screen = NewtFactory.createScreen(NewtFactory.createDisplay(null), 0);
             screen.addReference(); // trigger native creation
-            screenRemRef = true;
         } else if( !screen.isNativeValid() ) {
             screen.addReference(); // trigger native creation
-            screenRemRef = true;
-        } else {
-            screenRemRef = false;
         }
         
         if (!VID.GetModeInfo(newDim, mode)) {
@@ -112,34 +98,27 @@ public class NEWTWin {
             return Base.rserr_invalid_mode;
         }
 
-        VID.Printf(Defines.PRINT_ALL, " " + newDim.getWidth() + " " + newDim.getHeight() + '\n');
+        VID.Printf(Defines.PRINT_ALL, "...setting mode " + mode + ", " + newDim.getWidth() + " x " + newDim.getHeight() + ", fs " + fullscreen + ", driver " + driverName + "\n");
 
-        if (!Globals.appletMode) {
-            // destroy the existing window
-            if (window != null) shutdown();
-        }
+        // destroy the existing window, not screen
+        shutdownImpl(false);
         
-        if(null == window) {
-            final GLCapabilities caps = new GLCapabilities(glp);
-            CapabilitiesChooser chooser = null; // default
-            {
-                final cvar_t v = Cvar.Get("jogl_rgb565", "0", 0);
-                if( v.value != 0f ) {
-                    caps.setRedBits(5);
-                    caps.setGreenBits(6);
-                    caps.setBlueBits(5);
-                    chooser = new GenericGLCapabilitiesChooser(); // don't trust native GL-TK chooser
-                }
+        if(null != window) {
+            throw new InternalError("XXX");            
+        }
+        final GLCapabilities caps = new GLCapabilities(glp);
+        CapabilitiesChooser chooser = null; // default
+        {
+            final cvar_t v = Cvar.Get("jogl_rgb565", "0", 0);
+            if( v.value != 0f ) {
+                caps.setRedBits(5);
+                caps.setGreenBits(6);
+                caps.setBlueBits(5);
+                chooser = new GenericGLCapabilitiesChooser(); // don't trust native GL-TK chooser
             }
-            window = GLWindow.create(screen, caps);
-            window.setCapabilitiesChooser(chooser);
-            window.setTitle("Jake2 ("+driverName+"-newt-"+glp.getName().toLowerCase()+")");
         }
-
-        if (oldDisplayMode == null) {
-            oldDisplayMode = window.getScreen().getCurrentScreenMode();
-        }
-
+        window = GLWindow.create(screen, caps);
+        window.setCapabilitiesChooser(chooser);
         window.addWindowListener(new WindowAdapter() {
             public void windowDestroyNotify(WindowEvent e) {
                 if (!Globals.appletMode) {
@@ -148,55 +127,32 @@ public class NEWTWin {
             }
 
             public void windowResized(WindowEvent e) {
-                int width = window.getWidth();
-                int height = window.getHeight();
-                final int mask = ~0x03;
-                if ((width & 0x03) != 0) {
-                    width &= mask;
-                    width += 4;
-                }
-
-                Base.setVid(width, height);
-                // let the sound and input subsystems know about the new window
-                VID.NewWindow(width, height);            
+                propagateNewSize();
             }
         });
+        window.setTitle("Jake2 ("+driverName+"-newt-"+glp.getName().toLowerCase()+")");
 
-        if (Globals.appletMode) {
-            // Destroy the previous display if there is one
-            shutdown();
-
-            // We don't support full-screen mode
-            fullscreen = false;
+        if (oldDisplayMode == null) {
+            oldDisplayMode = window.getScreen().getCurrentScreenMode();
         }
 
         // We need to feed the NEWT Window to the NEWTKBD
         NEWTKBD.Init(window);
         
-        window.setSize(newDim.getWidth(), newDim.getHeight());
-
-        // D I F F E R E N T   J A K E 2   E V E N T   P R O C E S S I N G
         window.addWindowListener(NEWTKBD.listener);
         window.addKeyListener(NEWTKBD.listener);
         window.addMouseListener(NEWTKBD.listener);
 
         if (fullscreen) {
-            window.setFullscreen(true);
-
             ScreenMode sm = findDisplayMode(newDim);
             final DimensionImmutable smDim = sm.getMonitorMode().getSurfaceSize().getResolution();
             newDim.setWidth( smDim.getWidth() );
             newDim.setHeight( smDim.getHeight() );
             window.getScreen().setCurrentScreenMode(sm);
             window.setFullscreen(true);
-            window.setVisible(true);
-
-            VID.Printf(Defines.PRINT_ALL, "...setting fullscreen " + sm.toString() + '\n');
-
         } else {
-            if (!Globals.appletMode) {
-                window.setVisible(true);
-            } else {
+            window.setSize(newDim.getWidth(), newDim.getHeight());
+            if (Globals.appletMode) {
                 // Notify the size listener about the change
                 final SizeChangeListener listener = Globals.sizeChangeListener;
                 if (listener != null) {
@@ -204,6 +160,7 @@ public class NEWTWin {
                 }
             }
         }
+        window.setVisible(true);
 
         if (!Globals.appletMode) {
             while ( !window.isNativeValid()|| !window.isRealized() ) {
@@ -214,30 +171,67 @@ public class NEWTWin {
         }
         window.requestFocus();
         window.display(); // force GL resource validation
-        
+
         VID.Printf(Defines.PRINT_ALL, "...reques GLCaps "+window.getRequestedCapabilities()+'\n');
         VID.Printf(Defines.PRINT_ALL, "...chosen GLCaps "+window.getChosenGLCapabilities()+'\n');
-        
-        if(screenRemRef) {
-            screen.removeReference();
-        }
-
+        VID.Printf(Defines.PRINT_ALL, "...size "+window.getWidth()+" x "+window.getHeight()+'\n');
         fpsCounter.setUpdateFPSFrames(isARM ? 60 : 4*60, System.err);
 
+        // propagateNewSize("init");
+        activateGLContext();
+        
         return Base.rserr_ok;
     }
-
-    void shutdown() {
-        if (!Globals.appletMode) {
-            if ( null != window ) {
-                window.destroy();
-            }
+    
+    private void propagateNewSize() {
+        final int width = window.getWidth();
+        final int height = window.getHeight();
+        final int _width;
+        final int mask = ~0x03;
+        if ((width & 0x03) != 0) {
+            _width = ( width & mask ) + 4;
         } else {
-            if ( null != window ) {
+            _width = width;
+        }
+        VID.Printf(Defines.PRINT_ALL, "Resize: " + width + " x " + height + ", masked " + _width + "x" + height + "\n");  
+
+        Base.setVid(_width, height);
+        // let the sound and input subsystems know about the new window
+        VID.NewWindow(_width, height);                    
+    }
+
+    protected final void activateGLContext() {
+        final GLContext ctx = window.getContext();
+        if ( null != ctx && GLContext.getCurrent() != ctx ) {                
+            ctx.makeCurrent();
+        }
+    }
+    
+    protected final void deactivateGLContext() {
+        final GLContext ctx = window.getContext();
+        if ( null != ctx && GLContext.getCurrent() == ctx) {
+            ctx.release();
+        }        
+    }
+    
+    void shutdown() {
+        shutdownImpl(true);
+    }
+    
+    private void shutdownImpl(boolean withScreen) {
+        if ( null != window ) {
+            deactivateGLContext();
+            if (!Globals.appletMode) {
+                window.destroy();
+            } else {
                 window.destroy(); // same thing
             }
+            window = null;
         }
-        window = null;
+        if( withScreen && null != screen ) {
+            screen.destroy();
+            screen = null;
+        }
     }    
     
 }

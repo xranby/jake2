@@ -306,10 +306,6 @@ public class JoglGL2ES1 implements QGL {
         gl.glPixelStorei(pname, param);
     }
 
-    public void glPointSize(float size) {
-        gl.glPointSize(size);
-    }
-
     public void glPolygonMode(int face, int mode) {
         if( GL_FRONT_AND_BACK != face || GL_FILL != mode ) { // if !default
             System.err.println("IGNORED: glPolygonMode(0x"+Integer.toHexString(face)+", 0x"+Integer.toHexString(mode)+")");
@@ -406,6 +402,10 @@ public class JoglGL2ES1 implements QGL {
 
     public void glClientActiveTextureARB(int texture) {
         gl.glClientActiveTexture(texture);
+    }
+
+    public void glPointSize(float size) {
+        gl.glPointSize(size);
     }
 
     public void glPointParameterEXT(int pname, FloatBuffer pfParams) {
