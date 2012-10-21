@@ -64,7 +64,14 @@ public class S {
 				// ignore the lwjgl driver if runtime not in classpath
 			    Com.DPrintf("could not init lwjgl sound driver class.");
 			}
-			
+		
+                        try {
+                                Class.forName("jake2.sound.jsound.JSoundImpl");
+                        } catch (Throwable e) {
+                                // ignore the jsound driver if runtime not in classpath
+                            Com.DPrintf("could not init jsound sound driver class.");
+                        }
+
 			// prefered driver
 			try {
 				Class.forName("com.jogamp.openal.AL");
