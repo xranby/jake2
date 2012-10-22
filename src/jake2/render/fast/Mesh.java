@@ -35,7 +35,6 @@ import jake2.util.Lib;
 import jake2.util.Math3D;
 
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
 /**

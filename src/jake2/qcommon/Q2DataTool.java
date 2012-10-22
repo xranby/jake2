@@ -33,8 +33,7 @@ public class Q2DataTool {
         }
     }
 
-    void destroy() {
-
+    void dispose() {
     }
     
     void setStatus(String text) {

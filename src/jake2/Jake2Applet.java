@@ -31,6 +31,7 @@ import jake2.sys.Timer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+
 import javax.swing.JApplet;
 
 // import netscape.javascript.*;
@@ -103,10 +104,7 @@ public class Jake2Applet extends JApplet {
 
             // open the q2dialog, if we are not in dedicated mode.
             if (Globals.dedicated.value != 1.0f) {
-                // Jake2.Q2Dialog = new Q2DataDialog();
-                // Locale.setDefault(Locale.US);
-                // Jake2.Q2Dialog.setVisible(true);
-                Jake2.q2DataTool = new Q2DataTool();
+                Jake2.initQ2DataTool();
             }
 
             Qcommon.Init(new String[] { "Jake2" });

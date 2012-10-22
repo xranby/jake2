@@ -9,7 +9,7 @@ CP=lib/jogamp/gluegen-rt.jar:lib/jogamp/joal.jar:lib/jogamp/jogl-all.jar:dist/li
 X_ARGS="-Xmx100M"
 
 # should be redundant (AWT not used anyways), however, due to a bug in avian, it's required
-D0_ARGS="-Djava.awt.headless=true"
+#D0_ARGS="-Djava.awt.headless=true"
 
 #D_ARGS="-Dnewt.debug.Window.MouseEvent"
 #D_ARGS="-Dnewt.debug.Window.KeyEvent"

@@ -25,6 +25,8 @@
  */
 package jake2;
 
+import java.util.Locale;
+
 import jake2.qcommon.*;
 import jake2.sys.Timer;
 
@@ -35,8 +37,15 @@ import jake2.sys.Timer;
  */
 public final class Jake2 {
 
-    // public static Q2DataDialog Q2Dialog;
+    // public static Q2DataDialog q2DataTool;
     public static Q2DataTool q2DataTool;
+
+    /* pp */ static final void initQ2DataTool() {
+        q2DataTool = new Q2DataTool();
+        // q2DataTool = new Q2DataDialog();
+        Locale.setDefault(Locale.US);
+        // q2DataTool.setVisible(true);        
+    }
     
     /**
      * main is used to start the game. Quake2 for Java supports the following
@@ -79,12 +88,8 @@ public final class Jake2 {
     	    	
     	
     	// open the q2dialog, if we are not in dedicated mode.
-    	if (Globals.dedicated.value != 1.0f)
-    	{
-    	        q2DataTool = new Q2DataTool();
-    		// Q2Dialog = new Q2DataDialog();
-    		// Locale.setDefault(Locale.US);
-    		// Q2Dialog.setVisible(true);
+    	if (Globals.dedicated.value != 1.0f) {
+    	    Jake2.initQ2DataTool();
     	}
 
         // in C the first arg is the filename

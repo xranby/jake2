@@ -171,6 +171,7 @@ public class NEWTWin {
         }
         window.requestFocus();
         window.display(); // force GL resource validation
+        window.setAutoSwapBufferMode(false);
 
         VID.Printf(Defines.PRINT_ALL, "...reques GLCaps "+window.getRequestedCapabilities()+'\n');
         VID.Printf(Defines.PRINT_ALL, "...chosen GLCaps "+window.getChosenGLCapabilities()+'\n');

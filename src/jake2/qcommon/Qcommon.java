@@ -156,7 +156,7 @@ public final class Qcommon extends Globals {
 			CL.WriteConfiguration();
 						
 			if (Globals.dedicated.value != 1.0f) {
-			    Jake2.q2DataTool.destroy();
+			    Jake2.q2DataTool.dispose();
 			}
 
 		} catch (longjmpException e) {
