@@ -516,7 +516,7 @@ public abstract class Main extends Base {
     void R_DrawParticles() {
         if (gl_ext_pointparameters.value != 0.0f && qglPointParameterfEXT) {
 
-            //gl.gl.glEnableClientState(GL_VERTEX_ARRAY);
+            gl.glEnableClientState(GL_VERTEX_ARRAY);
             gl.glVertexPointer(3, 0, particle_t.vertexArray);
             gl.glEnableClientState(GL_COLOR_ARRAY);
             gl.glColorPointer(4, true, 0, particle_t.getColorAsByteBuffer());
@@ -529,7 +529,7 @@ public abstract class Main extends Base {
             gl.glDrawArrays(GL_POINTS, 0, r_newrefdef.num_particles);
 
             gl.glDisableClientState(GL_COLOR_ARRAY);
-            //gl.gl.glDisableClientState(GL_VERTEX_ARRAY);
+            //gl.glDisableClientState(GL_VERTEX_ARRAY);
 
             gl.glDisable(GL_BLEND);
             gl.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

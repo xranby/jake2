@@ -192,7 +192,7 @@ public abstract class Mesh extends Light {
 
 	GL_LerpVerts(paliashdr.num_xyz, ov, verts, move, frontv, backv);
 
-	// gl.gl.glEnableClientState( GL_VERTEX_ARRAY );
+	gl.glEnableClientState( GL_VERTEX_ARRAY );
 	gl.glVertexPointer(3, 0, vertexArrayBuf);
 
 	// PMM - added double damage shell
@@ -223,7 +223,7 @@ public abstract class Mesh extends Light {
 
 	gl.glClientActiveTextureARB(TEXTURE0);
 	gl.glTexCoordPointer(2, 0, textureArrayBuf);
-	// gl.gl.glEnableClientState( GL_TEXTURE_COORD_ARRAY);
+	gl.glEnableClientState( GL_TEXTURE_COORD_ARRAY );
 
 	int pos = 0;
 	int[] counts = paliashdr.counts;
