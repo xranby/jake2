@@ -54,7 +54,7 @@ public abstract class JoglES1Driver extends JoglGL2ES1 implements GLDriver {
     }
     
     protected JoglES1Driver() {
-        super(true);
+        super();
     }
 
     private NEWTWin newtWin = null;

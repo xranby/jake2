@@ -59,7 +59,7 @@ public abstract class JoglES2Driver extends JoglGL2ES1 implements GLDriver {
     protected static final ShaderSelectionMode shaderSelectionMode = ShaderSelectionMode.COLOR_TEXTURE2;
     
     protected JoglES2Driver() {
-        super(true);
+        super();
     }
 
     private NEWTWin newtWin = null;
