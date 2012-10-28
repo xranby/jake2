@@ -186,9 +186,9 @@ final public class NEWTKBD extends KBD
 			case KeyEvent.VK_DEAD_ACUTE:
 			case KeyEvent.VK_CIRCUMFLEX:
 			case KeyEvent.VK_DEAD_CIRCUMFLEX:
-			case KeyEvent.VK_BACK_QUOTE:
-			    key='`'; 
-			    break;
+			case KeyEvent.VK_BACK_QUOTE: key='`'; break;
+			case KeyEvent.VK_SPACE: key = Key.K_SPACE; break;
+			
 			default:
 			    if( KeyEvent.VK_0 <= code && code <= KeyEvent.VK_9 ) {
 			        key = code - KeyEvent.VK_0 + '0';
