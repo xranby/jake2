@@ -29,11 +29,11 @@ X_ARGS="-Xmx100M"
 # See README: JOGL2 Port for JOGL flags
 #
 #G_ARGS="+connect 10.1.0.52 +set cl_timeout 12000"
-#G_ARGS="+set s_impl dummy +set timeout 12000 +set cl_timeout 12000 +set gl_mode 0"
-#G_ARGS="+set s_impl dummy +set timeout 12000 +set cl_timeout 12000 +set gl_mode 0 +set vid_ref jogldummy"
-#G_ARGS="+set s_impl dummy +set timeout 12000 +set cl_timeout 12000 +set gl_mode 0 +set vid_ref joglgl2"
-G_ARGS="+set s_impl dummy +set timeout 12000 +set cl_timeout 12000 +set gl_mode 0 +set vid_ref jogles2"
-#G_ARGS="+set s_impl dummy +set timeout 12000 +set cl_timeout 12000 +set gl_mode 0 +set vid_ref jogles1"
+#G_ARGS="+set s_impl joal +set timeout 12000 +set cl_timeout 12000 +set gl_mode 0"
+#G_ARGS="+set s_impl joal +set timeout 12000 +set cl_timeout 12000 +set gl_mode 0 +set vid_ref jogldummy"
+#G_ARGS="+set s_impl joal +set timeout 12000 +set cl_timeout 12000 +set gl_mode 0 +set vid_ref joglgl2"
+G_ARGS="+set s_impl joal +set timeout 12000 +set cl_timeout 12000 +set gl_mode 0 +set vid_ref jogles2"
+#G_ARGS="+set s_impl joal +set timeout 12000 +set cl_timeout 12000 +set gl_mode 0 +set vid_ref jogles1"
 
 # G_ARGS2="+set vid_fullscreen 1"
 # G_ARGS2="+set jogl_gl2 0 +set jogl_gl2es1 1 +set jogl_gl2es2 1 +set jogl_rgb565 1"
