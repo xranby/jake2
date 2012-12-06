@@ -31,17 +31,15 @@ public final class JOALSoundImpl implements Sound {
 
 	static AL al;
 	static ALC alc;
+	static ALCdevice alcDevice;
+	static ALCcontext alcContext;
 	static EAX eax;
 	
 	cvar_t s_volume;
 	
 	private int[] buffers = new int[MAX_SFX + STREAM_QUEUE];
 	
-	private boolean initialized;
-
 	private JOALSoundImpl() {
-	    // singleton 
-	    this.initialized = false;
 	}
 
 	/* (non-Javadoc)
@@ -50,13 +48,11 @@ public final class JOALSoundImpl implements Sound {
 	public boolean Init() {
 		        
 		try {
-		    // TODO this a linux hack
-		    if (!initialized) {
-			ALut.alutInit();
-			initialized = true;
-		    }
-		    al = ALFactory.getAL();
 		    alc = ALFactory.getALC();
+		    alcDevice = alc.alcOpenDevice(null);
+		    alcContext = alc.alcCreateContext(alcDevice, null);
+		    alc.alcMakeContextCurrent(alcContext);
+		    al = ALFactory.getAL();
 		    checkError();
 		    initOpenALExtensions();		
 		} catch (ALException e) {
@@ -160,8 +156,6 @@ public final class JOALSoundImpl implements Sound {
 		StopAllSounds();
 		Channel.shutdown();
 		al.alDeleteBuffers(buffers.length, buffers, 0);
-		// TODO this is a linux hack
-		// ALut.alutExit();
 
 		Cmd.RemoveCommand("play");
 		Cmd.RemoveCommand("stopsound");
@@ -175,6 +169,8 @@ public final class JOALSoundImpl implements Sound {
 			known_sfx[i].clear();
 		}
 		num_sfx = 0;
+		alc.alcDestroyContext(alcContext);
+		alc.alcCloseDevice(alcDevice);
 	}
 	
 	/* (non-Javadoc)

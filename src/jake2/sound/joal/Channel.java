@@ -60,7 +60,7 @@ public class Channel {
 	private static int[] sources = new int[MAX_CHANNELS];
 	// a reference of JOALSoundImpl.buffers 
 	private static int[] buffers;
-	private static Map looptable = new Hashtable(MAX_CHANNELS);
+	private static Map <Integer, Channel> looptable = new Hashtable <Integer, Channel> (MAX_CHANNELS);
 
 	private static int numChannels; 
 
@@ -101,9 +101,12 @@ public class Channel {
 		modified = false;
 	}
     
-    private static int[] tmp = new int[1];
+    private static int[] tmp; 
 	
     static int init(AL al, int[] buffers) {
+            if(tmp==null)
+                tmp = new int[1];
+        
 	    Channel.al = al;
 		Channel.buffers = buffers;
 	    // create channels
@@ -115,9 +118,14 @@ public class Channel {
 			al.alGenSources(1, tmp, 0);
 			sourceId = tmp[0];
 			// can't generate more sources 
-			if (sourceId <= 0) break;
+			if (sourceId <= 0) {
+	                    Com.Println("can't generate more sources: channel="+
+                                         i +" sourceId<=0");
+			    break; 
+			}
 		    } catch (ALException e) {
 			// can't generate more sources 
+		        Com.Println("can't generate more sources: "+e);
 			break;
 		    }
 			
@@ -181,6 +189,8 @@ public class Channel {
     }
     
     static void unqueueStreams() {
+        if(tmp==null)
+           tmp = new int[1];
         if (!streamingEnabled) return;
         int source = channels[numChannels].sourceId;
 
@@ -197,6 +207,8 @@ public class Channel {
     }
 
     static void updateStream(ByteBuffer samples, int count, int format, int rate) {
+        if(tmp==null)
+            tmp = new int[1];
         enableStreaming();
         int[] buffer = tmp;
         int source = channels[numChannels].sourceId;
@@ -378,7 +390,7 @@ public class Channel {
 		sfxcache_t sc;
 		int num;
 		entity_state_t ent;
-		Object key;
+		Integer key;
 		int sound = 0;
 
 		for (int i=0 ; i<Globals.cl.frame.num_entities ; i++) {
@@ -389,7 +401,7 @@ public class Channel {
 			if (sound == 0) continue;
 
 			key = new Integer(ent.number);
-			ch = (Channel)looptable.get(key);
+			ch = looptable.get(key);
 
 			if (ch != null) {
 				// keep on looping
@@ -426,8 +438,8 @@ public class Channel {
 	private static void removeUnusedLoopSounds() {
 		Channel ch;
 		// stop unused loopsounds
-		for (Iterator iter = looptable.values().iterator(); iter.hasNext();) {
-			ch = (Channel)iter.next();
+		for (Iterator <Channel> iter = looptable.values().iterator(); iter.hasNext();) {
+			ch = iter.next();
 			if (!ch.autosound) {
 				al.alSourceStop(ch.sourceId);
 				al.alSourcei(ch.sourceId, AL.AL_LOOPING, AL.AL_FALSE);
