@@ -76,7 +76,8 @@ jogl     OpenGL bindings                https://jogamp.org/jogl/
 joal     OpenAL bindings                https://jogamp.org/joal/
 lwjgl    Light Weight Java Game Library http://www.lwjgl.org    (removed in JOGL2 port)
 openal   Audio library                  http://www.openal.org
-izpack	 Installer	                    http://www.izforge.com/
+izpack	 Installer                      http://www.izforge.com/
+proguard Java class file optimizer      http://proguard.sourceforge.net/
 
 the source distribution comes with:
 ant      build tool                     http://ant.apache.org
