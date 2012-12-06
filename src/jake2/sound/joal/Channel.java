@@ -115,12 +115,15 @@ public class Channel {
 		for (int i = 0; i < MAX_CHANNELS; i++) {
 			
 		    try {
+                        al.alGetError(); //Clear al error
 			al.alGenSources(1, tmp, 0);
 			sourceId = tmp[0];
+                        int errorCode = al.alGetError();
 			// can't generate more sources 
-			if (sourceId <= 0) {
+			if (errorCode != AL.AL_NO_ERROR) {
 	                    Com.Println("can't generate more sources: channel="+
-                                         i +" sourceId<=0");
+                                         i +" sourceId=" + sourceId +
+                                        " alError:" + errorCode);
 			    break; 
 			}
 		    } catch (ALException e) {
