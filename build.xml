@@ -48,10 +48,11 @@
 
     <!-- compile -->
     <target name="compile" depends="init">
-        <javac destdir="${build}" optimize="off" debug="on" source="1.6">
+        <javac destdir="${build}" optimize="on" debug="off" source="1.6">
             <src path="${src}"/>
             <include name="jake2/**"/>
             <classpath refid="build.class.path"/>
+            <compilerarg value="-Xlint"/>
         </javac>
     </target>
     
