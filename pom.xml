@@ -15,7 +15,7 @@
     <jake.build.outputDirectory>${project.build.directory}/classes</jake.build.outputDirectory>
     <jake.dist.lib.directory>${project.build.directory}</jake.dist.lib.directory>
     <jake.dist.dep.prefix/>
-    <jake.test.skip>true</jake.test.skip>
+    <jake.test.skip>false</jake.test.skip>
     <jake.javac.source>1.6</jake.javac.source>
     <jake.javac.target>${jake.javac.source}</jake.javac.target>
     <jogamp.version>2.0-rc11</jogamp.version>
