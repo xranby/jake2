@@ -128,6 +128,8 @@
                 <include>build/**</include>
                 <include>dist/**</include>
                 <include>Jake2-cvs-install.jar</include>
+                <include>jake2-cvs.*</include>
+                <include>jake2src-cvs.*</include>
               </includes>
             </fileset>
           </filesets>
