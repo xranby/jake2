@@ -111,6 +111,23 @@
         </configuration>
       </plugin>
       <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${project.basedir}</directory>
+              <followSymlinks>false</followSymlinks>
+              <includes>
+                <include>build/**</include>
+                <include>dist/**</include>
+                <include>Jake2-cvs-install.jar</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
         <version>2.6</version>
         <executions>
