@@ -12,6 +12,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <jake.build.outputDirectory>${project.build.directory}/classes</jake.build.outputDirectory>
+    <jake.dist.lib.directory>${project.build.directory}</jake.dist.lib.directory>
+    <jake.dist.dep.prefix/>
     <jake.test.skip>true</jake.test.skip>
     <jake.javac.source>1.6</jake.javac.source>
     <jake.javac.target>${jake.javac.source}</jake.javac.target>
@@ -64,6 +67,7 @@
   </dependencies>
 
   <build>
+    <outputDirectory>${jake.build.outputDirectory}</outputDirectory>
     <sourceDirectory>src</sourceDirectory>
     <resources>
       <resource>
@@ -102,10 +106,12 @@
         <artifactId>maven-jar-plugin</artifactId>
         <version>2.4</version>
         <configuration>
+          <outputDirectory>${jake.dist.lib.directory}</outputDirectory>
           <archive>
             <manifest>
               <mainClass>jake2.Jake2</mainClass>
               <addClasspath>true</addClasspath>
+              <classpathPrefix>${jake.dist.dep.prefix}</classpathPrefix>
             </manifest>
           </archive>
         </configuration>
@@ -139,7 +145,7 @@
             </goals>
             <configuration>
               <includeScope>runtime</includeScope>
-              <outputDirectory>${project.build.directory}</outputDirectory>
+              <outputDirectory>${jake.dist.lib.directory}/${jake.dist.dep.prefix}</outputDirectory>
               <overWriteReleases>false</overWriteReleases>
               <overWriteSnapshots>false</overWriteSnapshots>
               <overWriteIfNewer>true</overWriteIfNewer>
@@ -159,6 +165,20 @@
   </build>
 
   <profiles>
+    <profile>
+      <id>antcompat</id>
+      <activation>
+        <property>
+          <name>jake.antcompat</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <properties>
+        <jake.build.outputDirectory>build</jake.build.outputDirectory>
+        <jake.dist.lib.directory>dist/lib</jake.dist.lib.directory>
+        <jake.dist.dep.prefix>jogamp/</jake.dist.dep.prefix>
+      </properties>
+    </profile>
     <profile>
       <id>linux</id>
       <activation>
