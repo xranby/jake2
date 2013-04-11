@@ -73,7 +73,7 @@ final public class NEWTKBD extends KBD
 					break;
 					
 				case Jake2InputEvent.WheelMoved:
-					int dir = ((MouseEvent)event.ev).getWheelRotation();
+					float dir = ((MouseEvent)event.ev).getRotation()[0];
 					if (dir > 0) {
 						Do_Key_Event(Key.K_MWHEELDOWN, true);
 						Do_Key_Event(Key.K_MWHEELDOWN, false);
@@ -183,9 +183,8 @@ final public class NEWTKBD extends KBD
 //	00701
 			case KeyEvent.VK_INSERT: key = Key.K_INS; break;
 			// toggle console for DE and US keyboards
-			case KeyEvent.VK_DEAD_ACUTE:
+			case KeyEvent.VK_QUOTE:
 			case KeyEvent.VK_CIRCUMFLEX:
-			case KeyEvent.VK_DEAD_CIRCUMFLEX:
 			case KeyEvent.VK_BACK_QUOTE: key='`'; break;
 			case KeyEvent.VK_SPACE: key = Key.K_SPACE; break;
 			
