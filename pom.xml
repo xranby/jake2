@@ -19,44 +19,23 @@
     <jake.javac.source>1.6</jake.javac.source>
     <jake.javac.target>${jake.javac.source}</jake.javac.target>
     <jogamp.version>2.0-rc11</jogamp.version>
-    <jogamp.natives.os>foo</jogamp.natives.os>
-    <jogamp.natives.arch>bar</jogamp.natives.arch>
-    <jogamp.natives.classifier>natives-${jogamp.natives.os}-${jogamp.natives.arch}</jogamp.natives.classifier>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.jogamp.jogl</groupId>
-      <artifactId>jogl-all</artifactId>
-      <version>${jogamp.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jogamp.jogl</groupId>
-      <artifactId>jogl-all</artifactId>
-      <version>${jogamp.version}</version>
-      <classifier>${jogamp.natives.classifier}</classifier>
-    </dependency>
-    <dependency>
-      <groupId>org.jogamp.gluegen</groupId>
-      <artifactId>gluegen-rt</artifactId>
+      <artifactId>jogl-all-main</artifactId>
       <version>${jogamp.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jogamp.gluegen</groupId>
-      <artifactId>gluegen-rt</artifactId>
-      <version>${jogamp.version}</version>
-      <classifier>${jogamp.natives.classifier}</classifier>
-    </dependency>
-    <dependency>
-      <groupId>org.jogamp.joal</groupId>
-      <artifactId>joal</artifactId>
+      <artifactId>gluegen-rt-main</artifactId>
       <version>${jogamp.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jogamp.joal</groupId>
-      <artifactId>joal</artifactId>
+      <artifactId>joal-main</artifactId>
       <version>${jogamp.version}</version>
-      <classifier>${jogamp.natives.classifier}</classifier>
     </dependency>
     <dependency>
       <groupId>org.testng</groupId>
@@ -179,62 +158,6 @@
         <jake.build.outputDirectory>build</jake.build.outputDirectory>
         <jake.dist.lib.directory>dist/lib</jake.dist.lib.directory>
         <jake.dist.dep.prefix>jogamp/</jake.dist.dep.prefix>
-      </properties>
-    </profile>
-    <profile>
-      <id>linux</id>
-      <activation>
-        <os>
-          <family>linux</family>
-        </os>
-      </activation>
-      <properties>
-        <jogamp.natives.os>linux</jogamp.natives.os>
-      </properties>
-    </profile>
-    <profile>
-      <id>windows</id>
-      <activation>
-        <os>
-          <family>windows</family>
-        </os>
-      </activation>
-      <properties>
-        <jogamp.natives.os>windows</jogamp.natives.os>
-      </properties>
-    </profile>
-    <profile>
-      <id>i586</id>
-      <activation>
-        <os>
-          <arch>i586</arch>
-        </os>
-      </activation>
-      <properties>
-        <jogamp.natives.arch>i586</jogamp.natives.arch>
-      </properties>
-    </profile>
-    <profile>
-      <id>amd64</id>
-      <activation>
-        <os>
-          <arch>amd64</arch>
-        </os>
-      </activation>
-      <properties>
-        <jogamp.natives.arch>amd64</jogamp.natives.arch>
-      </properties>
-    </profile>
-    <profile>
-      <id>macosx</id>
-      <activation>
-        <os>
-          <family>mac</family>
-        </os>
-      </activation>
-      <properties>
-        <jogamp.natives.os>macosx</jogamp.natives.os>
-        <jogamp.natives.arch>universal</jogamp.natives.arch>
       </properties>
     </profile>
   </profiles>
