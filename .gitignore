@@ -1,0 +1,10 @@
+.idea/
+build/
+dist/
+target/
+Jake2-cvs-install.jar
+jake2-cvs.tar.gz
+jake2-cvs.zip
+jake2src-cvs.tar.gz
+jake2src-cvs.zip
+*.iml

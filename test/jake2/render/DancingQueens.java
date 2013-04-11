@@ -67,9 +67,7 @@ public class DancingQueens {
     
     void init() {
     	Globals.dedicated = Cvar.Get("dedicated", "0", Qcommon.CVAR_NOSET);
-		Jake2.Q2Dialog = new Q2DataDialog();
-		Locale.setDefault(Locale.US);
-		Jake2.Q2Dialog.setVisible(true);        
+        Q2TestDataUtil.initQ2DataTool();
         
 	String DRIVER = "lwjgl";
 	

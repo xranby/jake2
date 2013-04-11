@@ -3,7 +3,11 @@
 cd `dirname $0`
 
 # for jogl and joal
-CP=lib/jogamp/gluegen-rt.jar:lib/jogamp/joal.jar:lib/jogamp/jogl-all.jar:dist/lib/jake2.jar
+if [ -f "target/jake2.jar" ] ; then
+  CP=target/jake2.jar
+else
+  CP=lib/jogamp/gluegen-rt.jar:lib/jogamp/joal.jar:lib/jogamp/jogl-all.jar:dist/lib/jake2.jar
+fi
 
 #breaks VM's like avian
 X_ARGS="-Xmx100M"
