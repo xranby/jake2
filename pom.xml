@@ -18,7 +18,7 @@
     <jake.test.skip>false</jake.test.skip>
     <jake.javac.source>1.6</jake.javac.source>
     <jake.javac.target>${jake.javac.source}</jake.javac.target>
-    <jogamp.version>2.0.2-rc20130404</jogamp.version>
+    <jogamp.version>2.0.2-rc-20130424</jogamp.version>
   </properties>
 
   <dependencies>
