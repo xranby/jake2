@@ -18,7 +18,7 @@
     <jake.test.skip>false</jake.test.skip>
     <jake.javac.source>1.6</jake.javac.source>
     <jake.javac.target>${jake.javac.source}</jake.javac.target>
-    <jogamp.version>2.0.2-rc-20130425</jogamp.version>
+    <jogamp.version>2.0.2-rc12</jogamp.version>
   </properties>
 
   <dependencies>
@@ -164,7 +164,7 @@
     <profile>
        <id>jogamp-test</id>
        <activation>
-         <activeByDefault>true</activeByDefault>
+         <activeByDefault>false</activeByDefault>
        </activation>
        <repositories>
          <repository>
