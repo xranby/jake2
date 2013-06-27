@@ -133,16 +133,12 @@ final public class NEWTKBD extends KBD
 //	00635                 case XK_KP_End:  key = K_KP_END; break;
 			case KeyEvent.VK_END: key = Key.K_END; break;
  
-			case KeyEvent.VK_KP_LEFT: key = Key.K_KP_LEFTARROW; break;
 			case KeyEvent.VK_LEFT: key = Key.K_LEFTARROW; break;
  
-			case KeyEvent.VK_KP_RIGHT: key = Key.K_KP_RIGHTARROW; break;
 			case KeyEvent.VK_RIGHT: key = Key.K_RIGHTARROW; break;
 
-			case KeyEvent.VK_KP_DOWN: key = Key.K_KP_DOWNARROW; break;
 			case KeyEvent.VK_DOWN: key = Key.K_DOWNARROW; break;
 
-			case KeyEvent.VK_KP_UP: key = Key.K_KP_UPARROW; break;
 			case KeyEvent.VK_UP: key = Key.K_UPARROW; break; 
 
 			case KeyEvent.VK_ESCAPE: key = Key.K_ESCAPE; break; 

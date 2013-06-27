@@ -43,8 +43,7 @@ import javax.media.nativewindow.util.Dimension;
 import javax.media.nativewindow.util.DimensionImmutable;
 import javax.media.nativewindow.util.SurfaceSize;
 
-import com.jogamp.newt.ScreenMode;
-import com.jogamp.newt.util.MonitorMode;
+import com.jogamp.newt.MonitorMode;
 
 /**
  * VID is a video driver.
@@ -490,13 +489,12 @@ public class VID extends Globals {
 	};
 
 	static void initModeList() {
-	        final List<ScreenMode> modes = re.getModeList();
+	        final List<MonitorMode> modes = re.getModeList();
                 final ArrayList<String> fs_resolutions_list = new ArrayList<String>();
                 final ArrayList<vidmode_t> fs_modes_list = new ArrayList<vidmode_t>();
                 final HashSet<DimensionImmutable> resSet = new HashSet<DimensionImmutable>();
 		for (int i = 0; i < modes.size(); i++) {
-		    final ScreenMode sm = modes.get(modes.size() - 1 - i); // reverse order: low -> high res.
-                    final MonitorMode mm = sm.getMonitorMode();
+		    final MonitorMode mm = modes.get(modes.size() - 1 - i); // reverse order: low -> high res.
                     final SurfaceSize ss = mm.getSurfaceSize();
                     final DimensionImmutable m = ss.getResolution();
                     if( resSet.add(m) ) {

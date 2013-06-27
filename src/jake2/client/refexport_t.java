@@ -35,7 +35,7 @@ import jake2.sys.KBD;
 
 import javax.media.nativewindow.util.Dimension;
 
-import com.jogamp.newt.ScreenMode;
+import com.jogamp.newt.MonitorMode;
 
 /**
  * refexport_t
@@ -110,7 +110,7 @@ public interface refexport_t {
 	
 	int apiVersion();
 	
-	List<ScreenMode> getModeList();
+	List<MonitorMode> getModeList();
 	
 	KBD getKeyboardHandler();
 }

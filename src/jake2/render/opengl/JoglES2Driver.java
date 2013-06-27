@@ -35,7 +35,7 @@ import jake2.render.Base;
 import javax.media.nativewindow.util.Dimension;
 import javax.media.opengl.*;
 
-import com.jogamp.newt.ScreenMode;
+import com.jogamp.newt.MonitorMode;
 import com.jogamp.opengl.util.glsl.fixedfunc.FixedFuncUtil;
 import com.jogamp.opengl.util.glsl.fixedfunc.ShaderSelectionMode;
 
@@ -66,7 +66,7 @@ public abstract class JoglES2Driver extends JoglGL2ES1 implements GLDriver {
 
     public abstract String getName();
     
-    public List<ScreenMode> getModeList() {
+    public List<MonitorMode> getModeList() {
         if(null == newtWin) {
             throw new RuntimeException("NEWTWin not yet initialized.");
         }

@@ -6,7 +6,7 @@ import javax.media.nativewindow.util.Dimension;
 
 import jake2.qcommon.xcommand_t;
 
-import com.jogamp.newt.ScreenMode;
+import com.jogamp.newt.MonitorMode;
 
 public interface GLDriver {
     
@@ -26,7 +26,7 @@ public interface GLDriver {
     
     void logNewFrame();
     
-    List<ScreenMode> getModeList();
+    List<MonitorMode> getModeList();
 
     void updateScreen(xcommand_t callback);
 

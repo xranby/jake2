@@ -12,7 +12,7 @@ import java.util.List;
 
 import javax.media.nativewindow.util.Dimension;
 
-import com.jogamp.newt.ScreenMode;
+import com.jogamp.newt.MonitorMode;
 
 import jake2.client.refdef_t;
 import jake2.client.refexport_t;
@@ -173,8 +173,8 @@ public class DummyRenderer implements refexport_t {
 	/* (non-Javadoc)
 	 * @see jake2.client.refexport_t#getModeList()
 	 */
-	public List<ScreenMode> getModeList() {
-		return new ArrayList<ScreenMode>();
+	public List<MonitorMode> getModeList() {
+		return new ArrayList<MonitorMode>();
 	}
 
 	/* (non-Javadoc)

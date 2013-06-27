@@ -28,36 +28,37 @@ import javax.media.opengl.GLProfile;
 import jogamp.opengl.FPSCounterImpl;
 
 import com.jogamp.common.os.Platform;
-import com.jogamp.newt.NewtFactory;
-import com.jogamp.newt.Screen;
-import com.jogamp.newt.ScreenMode;
+import com.jogamp.newt.*;
 import com.jogamp.newt.event.WindowAdapter;
 import com.jogamp.newt.event.WindowEvent;
 import com.jogamp.newt.opengl.GLWindow;
-import com.jogamp.newt.util.MonitorMode;
-import com.jogamp.newt.util.ScreenModeUtil;
+import com.jogamp.newt.util.MonitorModeUtil;
 import com.jogamp.opengl.GenericGLCapabilitiesChooser;
 
 public class NEWTWin {
-    ScreenMode oldDisplayMode = null;
+    MonitorMode oldDisplayMode = null;
     volatile Screen screen = null;
     volatile GLWindow window = null;
     final FPSCounterImpl fpsCounter = new FPSCounterImpl();
 
-    public List<ScreenMode> getModeList() {
-        return screen.getScreenModes();
+    public List<MonitorMode> getModeList() {
+        if( null != window ) {
+            final MonitorDevice mainMonitor = window.getMainMonitor();
+            return mainMonitor.getSupportedModes();
+        } else {        
+            return screen.getMonitorModes();
+        }
     }
 
-    public ScreenMode findDisplayMode(DimensionImmutable dim) {
-        final List<ScreenMode> sml = ScreenModeUtil.filterByResolution(screen.getScreenModes(), dim);
+    public MonitorMode findDisplayMode(DimensionImmutable dim) {
+        final List<MonitorMode> sml = MonitorModeUtil.filterByResolution(getModeList(), dim);
         if(sml.size() == 0) {
             return oldDisplayMode;
         }
         return sml.get(0);
     }
 
-    public String getModeString(ScreenMode sm) {
-        final MonitorMode mm = sm.getMonitorMode();
+    public String getModeString(MonitorMode mm) {
         final SurfaceSize ss = mm.getSurfaceSize();
         final DimensionImmutable m = ss.getResolution();
         final StringBuffer sb = new StringBuffer();
@@ -122,7 +123,9 @@ public class NEWTWin {
         window.addWindowListener(new WindowAdapter() {
             public void windowDestroyNotify(WindowEvent e) {
                 if (!Globals.appletMode) {
-                    Cbuf.ExecuteText(Defines.EXEC_APPEND, "quit");
+                    if( null != window ) { // already in shutdown ?
+                        Cbuf.ExecuteText(Defines.EXEC_APPEND, "quit");
+                    }
                 }
             }
 
@@ -132,8 +135,10 @@ public class NEWTWin {
         });
         window.setTitle("Jake2 ("+driverName+"-newt-"+glp.getName().toLowerCase()+")");
 
+        final MonitorDevice mainMonitor = window.getMainMonitor();
+        
         if (oldDisplayMode == null) {
-            oldDisplayMode = window.getScreen().getCurrentScreenMode();
+            oldDisplayMode = mainMonitor.getCurrentMode();
         }
 
         // We need to feed the NEWT Window to the NEWTKBD
@@ -144,11 +149,11 @@ public class NEWTWin {
         window.addMouseListener(NEWTKBD.listener);
 
         if (fullscreen) {
-            ScreenMode sm = findDisplayMode(newDim);
-            final DimensionImmutable smDim = sm.getMonitorMode().getSurfaceSize().getResolution();
+            MonitorMode mm = findDisplayMode(newDim);
+            final DimensionImmutable smDim = mm.getSurfaceSize().getResolution();
             newDim.setWidth( smDim.getWidth() );
             newDim.setHeight( smDim.getHeight() );
-            window.getScreen().setCurrentScreenMode(sm);
+            mainMonitor.setCurrentMode(mm);
             window.setFullscreen(true);
         } else {
             window.setSize(newDim.getWidth(), newDim.getHeight());
@@ -222,12 +227,9 @@ public class NEWTWin {
     private void shutdownImpl(boolean withScreen) {
         if ( null != window ) {
             deactivateGLContext();
-            if (!Globals.appletMode) {
-                window.destroy();
-            } else {
-                window.destroy(); // same thing
-            }
+            final GLWindow _window = window;
             window = null;
+            _window.destroy(); // same thing
         }
         if( withScreen && null != screen ) {
             screen.destroy();

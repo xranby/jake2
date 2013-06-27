@@ -62,10 +62,6 @@ public final class InputListener implements KeyListener, MouseListener, WindowLi
 	}
 
         @Override
-	public void keyTyped(KeyEvent e) {
-	}
-
-        @Override
 	public void mouseClicked(MouseEvent e) {
 	}
 
