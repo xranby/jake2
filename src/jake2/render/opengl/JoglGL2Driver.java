@@ -114,9 +114,8 @@ public abstract class JoglGL2Driver extends JoglGL2ES1 implements GLDriver {
     }
 
     public void endFrame() {
-        newtWin.window.swapBuffers();
+        newtWin.endFrame();
         // deactivate();
-        newtWin.fpsCounter.tickFPS();
     }
 
     public void appActivate(boolean activate) {

@@ -102,9 +102,9 @@ public abstract class JoglDummyDriver extends DummyGL implements GLDriver {
     }
 
     public void endFrame() {
-        // newtWin.window.swapBuffers();
+        newtWin.checkQuit();
+        // newtWin.swapBuffers();
         // deactivate();
-        newtWin.fpsCounter.tickFPS();
     }
 
     public void appActivate(boolean activate) {

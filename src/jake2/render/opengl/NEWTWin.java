@@ -18,6 +18,7 @@ import jake2.sys.NEWTKBD;
 import java.util.List;
 
 import javax.media.nativewindow.CapabilitiesChooser;
+import javax.media.nativewindow.WindowClosingProtocol.WindowClosingMode;
 import javax.media.nativewindow.util.Dimension;
 import javax.media.nativewindow.util.DimensionImmutable;
 import javax.media.nativewindow.util.SurfaceSize;
@@ -39,6 +40,7 @@ public class NEWTWin {
     MonitorMode oldDisplayMode = null;
     volatile Screen screen = null;
     volatile GLWindow window = null;
+    volatile boolean shouldQuit = false;
     final FPSCounterImpl fpsCounter = new FPSCounterImpl();
 
     public List<MonitorMode> getModeList() {
@@ -119,14 +121,11 @@ public class NEWTWin {
             }
         }
         window = GLWindow.create(screen, caps);
+        window.setDefaultCloseOperation(WindowClosingMode.DO_NOTHING_ON_CLOSE); // we do handle QUIT on our own, no GLWindow.display() called.
         window.setCapabilitiesChooser(chooser);
         window.addWindowListener(new WindowAdapter() {
             public void windowDestroyNotify(WindowEvent e) {
-                if (!Globals.appletMode) {
-                    if( null != window ) { // already in shutdown ?
-                        Cbuf.ExecuteText(Defines.EXEC_APPEND, "quit");
-                    }
-                }
+                shouldQuit = !Globals.appletMode && null != window; // not applet and not already in shutdown ?
             }
 
             public void windowResized(WindowEvent e) {
@@ -218,6 +217,23 @@ public class NEWTWin {
         if ( null != ctx && GLContext.getCurrent() == ctx) {
             ctx.release();
         }        
+    }
+    
+    /** Performs {@link GLWindow#swapBuffers()}, ticks the fps counter and performs <code>QUIT</code> if requested. */
+    public final void endFrame() {
+        window.swapBuffers();
+        fpsCounter.tickFPS();
+        if( shouldQuit ) {
+            deactivateGLContext();
+            Cbuf.ExecuteText(Defines.EXEC_APPEND, "quit");
+        }
+    }
+    /** Performs <code>QUIT</code> if requested. */
+    public final void checkQuit() {
+        if( shouldQuit ) {
+            deactivateGLContext();
+            Cbuf.ExecuteText(Defines.EXEC_APPEND, "quit");
+        }
     }
     
     void shutdown() {

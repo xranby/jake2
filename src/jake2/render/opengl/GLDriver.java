@@ -18,6 +18,7 @@ public interface GLDriver {
     
     void beginFrame(float camera_separation);
     
+    /** Performs <code>swapBuffers()</code>, ticks the fps counter and performs <code>QUIT</code> if requested. */ 
     void endFrame();
 
     void appActivate(boolean activate);
