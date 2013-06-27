@@ -18,7 +18,9 @@ X_ARGS="-Xmx100M"
 #D_ARGS="-Dnewt.debug.Window.MouseEvent"
 #D_ARGS="-Dnewt.debug.Window.KeyEvent"
 #D_ARGS="-Dnewt.debug.Screen -Dnewt.debug.Window"
-#D_ARGS="-Djogl.debug=all"
+#D_ARGS="-Dnewt.debug.Window"
+#D_ARGS="-Djogl.debug=all -Dnewt.debug=all"
+#D_ARGS="-Dnewt.debug=all -Dnativewindow.debug.NativeWindow"
 #D_ARGS="-Djogl.debug.DebugGL -Djogl.debug.TraceGL"
 #D_ARGS="-Djogl.debug.DebugGL"
 #D_ARGS="-Djogl.debug.TraceGL"
@@ -36,7 +38,7 @@ X_ARGS="-Xmx100M"
 #G_ARGS="+set s_impl joal +set timeout 12000 +set cl_timeout 12000 +set gl_mode 0"
 #G_ARGS="+set s_impl joal +set timeout 12000 +set cl_timeout 12000 +set gl_mode 0 +set vid_ref jogldummy"
 #G_ARGS="+set s_impl joal +set timeout 12000 +set cl_timeout 12000 +set gl_mode 0 +set vid_ref joglgl2"
-G_ARGS="+set s_impl joal +set timeout 12000 +set cl_timeout 12000 +set gl_mode 0 +set vid_ref jogles2"
+#G_ARGS="+set s_impl joal +set timeout 12000 +set cl_timeout 12000 +set gl_mode 0 +set vid_ref jogles2"
 #G_ARGS="+set s_impl joal +set timeout 12000 +set cl_timeout 12000 +set gl_mode 0 +set vid_ref jogles1"
 
 # G_ARGS2="+set vid_fullscreen 1"
@@ -45,4 +47,4 @@ G_ARGS="+set s_impl joal +set timeout 12000 +set cl_timeout 12000 +set gl_mode 0
 # G_ARGS2="+set r_shadows 0 +set gl_shadows 0 +set gl_dynamic 0"
 # G_ARGS2="+connect 10.1.0.52"
 
-exec java $X_ARGS -cp $CP $D0_ARGS $D_ARGS jake2.Jake2 $G_ARGS $G_ARGS2 $*
+exec java $X_ARGS -cp $CP $D0_ARGS $D_ARGS jake2.Jake2 $G_ARGS $G_ARGS2 $* 2>&1 | tee Jake2.log

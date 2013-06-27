@@ -1,5 +1,6 @@
 <!-- Buildfile -->
 <project name="jake2" default="usage" basedir=".">
+    <property environment="env" />
 
     <taskdef name="proguard" classname="proguard.ant.ProGuardTask">
         <classpath>
@@ -17,6 +18,25 @@
     <property name="test" location="test"/>
     <property name="build" location="build"/>
     <property name="dist" location="dist"/>
+
+    <property name="javacdebug"       value="false" /> 
+    <property name="javacdebuglevel"  value="" /> 
+
+    <condition property="target.rt.jar" value="${env.TARGET_RT_JAR}">
+        <not>
+         <equals arg1="${env.TARGET_RT_JAR}" arg2="$${env.TARGET_RT_JAR}" casesensitive="true" />
+        </not>
+    </condition>
+    <!-- Default value for std Java (incl. Java7 on OS X) -->
+    <condition property="target.rt.jar"
+               value="${java.home}/lib/rt.jar">
+               <available file="${java.home}/lib/rt.jar"/>
+    </condition>
+    <!-- Default fallback value for Java6 OS X -->
+    <condition property="target.rt.jar"
+               value="${java.home}/../Classes/classes.jar">
+               <available file="${java.home}/../Classes/classes.jar"/>
+    </condition>
 
     <!-- different classpaths -->
     <path id="build.class.path">
@@ -48,7 +68,9 @@
 
     <!-- compile -->
     <target name="compile" depends="init">
-        <javac destdir="${build}" optimize="on" debug="off" source="1.6">
+        <javac destdir="${build}" 
+               source="1.6" target="1.6" bootclasspath="${target.rt.jar}"
+               debug="${javacdebug}" debuglevel="${javacdebuglevel}">
             <src path="${src}"/>
             <include name="jake2/**"/>
             <classpath refid="build.class.path"/>
