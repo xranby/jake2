@@ -2,13 +2,6 @@
 <project name="jake2" default="usage" basedir=".">
     <property environment="env" />
 
-    <taskdef name="proguard" classname="proguard.ant.ProGuardTask">
-        <classpath>
-            <pathelement location="lib/proguard/proguard.jar"/>
-        </classpath>
-    </taskdef>
-    
-
     <taskdef name="izpack" classpath="lib/izpack/standalone-compiler.jar"
          classname="com.izforge.izpack.ant.IzPackTask"/>
          
@@ -19,13 +12,29 @@
     <property name="build" location="build"/>
     <property name="dist" location="dist"/>
 
-    <property name="javacdebug"       value="false" /> 
-    <property name="javacdebuglevel"  value="" /> 
+    <!-- default values -->
+    <property name="javacdebug"       value="true" /> 
+    <property name="javacdebuglevel"  value="source,lines" /> 
 
+    <condition property="target.rt.jar" value="${env.PLUGIN_JAR}">
+        <not>
+         <equals arg1="${env.PLUGIN_JAR}" arg2="$${env.PLUGIN_JAR}" casesensitive="true" />
+        </not>
+    </condition>
     <condition property="target.rt.jar" value="${env.TARGET_RT_JAR}">
         <not>
          <equals arg1="${env.TARGET_RT_JAR}" arg2="$${env.TARGET_RT_JAR}" casesensitive="true" />
         </not>
+    </condition>
+    <condition property="plugin.jar"
+               value="${java.home}/lib/plugin.jar">
+               <available file="${java.home}/lib/plugin.jar"/>
+    </condition>
+
+    <!-- Default value for std Java (incl. Java7 on OS X) -->
+    <condition property="target.rt.jar"
+               value="${java.home}/lib/rt.jar">
+               <available file="${java.home}/lib/rt.jar"/>
     </condition>
     <!-- Default value for std Java (incl. Java7 on OS X) -->
     <condition property="target.rt.jar"
@@ -43,7 +52,7 @@
         <pathelement location="lib/jogamp/gluegen-rt.jar"/>
         <pathelement location="lib/jogamp/jogl-all.jar"/>
         <pathelement location="lib/jogamp/joal.jar"/>
-        <!-- pathelement location="${java.home}/lib/plugin.jar"/ -->
+        <pathelement location="${plugin.jar}"/>
     </path>
     
     <!-- usage -->
@@ -127,23 +136,6 @@
             <include name="*.png"/>
             <include name="mirrors"/>
         </jar>
-        <property name="classes" value="${java.home}/lib/rt.jar"/>
-        <!-- property name="plugin" value="${java.home}/lib/plugin.jar"/ -->
-        <condition property="classes" value="${java.home}/../Classes/classes.jar">
-            <os name="Mac OS X"/>
-        </condition>         
-        <!-- proguard printseeds="on" printusage="off" outjar="${dist}/lib/jake2.jar"
-            defaultpackage="" overloadaggressively="off" printmapping="jake2.map">
-            <injar name="jake2.jar"/>
-            <libraryjar name="lib/jogamp/jogl-all.jar"/>
-            <libraryjar name="lib/jogamp/joal.jar"/>
-            <libraryjar name="lib/jogamp/gluegen-rt.jar"/>
-            <libraryjar name="${classes}"/>
-            <libraryjar name="${plugin}"/>
-            <keep access="public" name="jake2.Jake2">
-                <method name="main(java.lang.String[])"/>
-            </keep>
-        </proguard -->
     </target>
     
     <!-- everything -->
