@@ -97,7 +97,7 @@ public interface refexport_t {
 	*/
 	/* 256 r,g,b values;	null = game palette, size = 768 bytes */
 	void CinematicSetPalette(final byte[] palette);
-	void BeginFrame(float camera_separation);
+	boolean BeginFrame(float camera_separation);
 	void EndFrame();
 
 	void AppActivate(boolean activate);

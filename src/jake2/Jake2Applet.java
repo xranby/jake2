@@ -29,107 +29,185 @@ import jake2.game.Cmd;
 import jake2.qcommon.*;
 import jake2.sys.Timer;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
+import java.applet.Applet;
+import java.awt.*;
+import java.util.StringTokenizer;
 
-import javax.swing.JApplet;
+import com.jogamp.common.os.Platform;
 
-// import netscape.javascript.*;
+import netscape.javascript.*;
 
 /**
  * Jake2 is the main class of Quake2 for Java.
  */
 @SuppressWarnings("serial")
-public class Jake2Applet extends JApplet {
+public class Jake2Applet extends Applet {
 
-    // FIXME private JSObject self;
-    private volatile boolean shouldShutDown;
-    private boolean shutDown;
-    private Object shutDownLock = new Object();
+    private JSObject self;
+    private volatile boolean gameShouldShutDown;
+    private volatile boolean gameShutDown;
+    private volatile boolean gameStarted;
+    private Object gameLifecycleLock = new Object();
+    
+    private static String sz0_args = " +set gl_mode 11 +set vid_width ";
+    private static String sz1_args = " +set vid_height ";
 
+    @Override
     public void init() {
-        // Before Jake2 is fully initialized, make the applet black
-        // like the rest of the web page
-        setBackground(Color.BLACK);
+        System.err.println("Jake2 Applet Init: "+Thread.currentThread().getName());
+        setBackground(new Color(0x33, 0x33, 0x33, 0xff)); // web page
+        setLayout(new java.awt.BorderLayout());
     }
 
+    @Override
     public void start() {
-        setLayout(new BorderLayout());
-        new GameThread().start();
+        System.err.println("Jake2 Applet Start.0: "+Thread.currentThread().getName());
+        synchronized(gameLifecycleLock) {
+            gameShouldShutDown = false;
+            gameShutDown = false;
+            gameStarted = false;
+        }
+        if( EventQueue.isDispatchThread() ) { // Game thread offloads to AWT-EDT in Applet mode
+            new GameThread().start();            
+        } else {
+            synchronized(gameLifecycleLock) {
+                new GameThread().start();
+                while (!gameStarted) {
+                    try {
+                        gameLifecycleLock.wait();
+                    } catch (InterruptedException e) {
+                    }
+                }
+            }
+        }
+        System.err.println("Jake2 Applet Start.X: "+Thread.currentThread().getName());
     }
 
+    @Override
     public void stop() {
-        synchronized(shutDownLock) {
-            shouldShutDown = true;
-            while (!shutDown) {
+        System.err.println("Jake2 Applet Stop.0: "+Thread.currentThread().getName());
+        synchronized(gameLifecycleLock) {
+            gameShouldShutDown = true;
+            while (!gameShutDown) {
                 try {
-                    shutDownLock.wait();
+                    gameLifecycleLock.wait();
                 } catch (InterruptedException e) {
                 }
             }
         }
-        Cmd.ExecuteString("quit");
+        System.err.println("Jake2 Applet Stop.X: "+Thread.currentThread().getName());
     }
-
+    
+    @Override
+    public void destroy() {
+        System.err.println("Jake2 Applet Destroy.0: "+Thread.currentThread().getName());
+    }
+    
     class GameThread extends Thread {
         public GameThread() {
             super("Jake2 Game Thread");
         }
 
         public void run() {
-            // TODO: check if dedicated is set in config file
-    	
-            Globals.dedicated= Cvar.Get("dedicated", "0", Qcommon.CVAR_NOSET);
-    
-            // Set things up for applet execution
-            Qcommon.appletMode = true;
-            Qcommon.applet = Jake2Applet.this;
-            Qcommon.sizeChangeListener = new SizeChangeListener() {
-                    public void sizeChanged(int width, int height) {
-                        /** FIXME
-                        try {
-                            if (self == null) {
-                                JSObject win = JSObject.getWindow(Jake2Applet.this);
-                                self = (JSObject) win.eval("document.getElementById(\"" +
-                                                           getParameter("id") + "\")");
+            synchronized(gameLifecycleLock) {
+                // TODO: check if dedicated is set in config file
+        	
+                System.err.println("Jake2 Applet Game START: "+Thread.currentThread().getName());
+                
+                Globals.dedicated= Cvar.Get("dedicated", "0", Qcommon.CVAR_NOSET);
+        
+                // Set things up for applet execution
+                Globals.appletMode = true;
+                Globals.applet = Jake2Applet.this;
+                Globals.sizeChangeListener = new SizeChangeListener() {
+                        public void sizeChanged(int width, int height) {
+                            try {
+                                if (self == null) {
+                                    JSObject win = JSObject.getWindow(Jake2Applet.this);
+                                    self = (JSObject) win.eval("document.getElementById(\"" +
+                                                               getParameter("id") + "\")");
+                                }
+                                self.setMember("width", new Integer(width));
+                                self.setMember("height", new Integer(height));
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-
-                            self.setMember("width", new Integer(width));
-                            self.setMember("height", new Integer(height));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        } */
+                        }
+                    };
+    
+                // open the q2dialog, if we are not in dedicated mode.
+                if (Globals.dedicated.value != 1.0f) {
+                    Jake2.initQ2DataTool();
+                }
+                
+                final int a_width = Jake2Applet.this.getWidth();
+                final int a_height = (int) ( a_width * 0.75f );
+    
+                final String cmd_args;
+                {
+                    final String applet_args = getParameter("jake_args");
+                    StringBuffer sb = new StringBuffer();                
+                    sb.append("Jake2 ");
+                    if( null != applet_args && applet_args.length() > 0 ) {
+                        sb.append(applet_args);
                     }
-                };
-
-            // open the q2dialog, if we are not in dedicated mode.
-            if (Globals.dedicated.value != 1.0f) {
-                Jake2.initQ2DataTool();
+                    sb.append(sz0_args);
+                    sb.append(a_width);
+                    sb.append(sz1_args);
+                    sb.append(a_height);
+                    cmd_args = sb.toString();
+                }
+                System.err.println("Jake2 Applet Cmd: "+cmd_args);
+                final String[] c_args;
+                StringTokenizer tokens = new StringTokenizer(cmd_args);
+                final int argc = tokens.countTokens();
+                c_args = new String[argc];
+                int i=0;
+                while( tokens.hasMoreTokens() ) {
+                    c_args[i++] = tokens.nextToken().trim();
+                }
+                
+                Qcommon.Init(c_args);
+                if( Platform.OSType.MACOS == Platform.getOSType() ) {
+                    // FIXME: Bug on OSX: 1st NewtCanvasAWT added .. causes flickering, so 'do it again'.
+                    // Interesting that our JOGLNewtApplet1Run does not suffer from this behavior!
+                    Cmd.ExecuteString("quit");
+                    Qcommon.Init(c_args);
+                }
+                Globals.nostdout = Cvar.Get("nostdout", "0", 0);
+                
+                gameStarted = true;
+                gameLifecycleLock.notifyAll();
             }
 
-            Qcommon.Init(new String[] { "Jake2" });
-
-            Globals.nostdout = Cvar.Get("nostdout", "0", 0);
-
             try {
-                while (!shouldShutDown) {
-                    int oldtime = Timer.Milliseconds();
-                    int newtime;
-                    int time;
-                    while (true) {
-                        // find time spending rendering last frame
-                        newtime = Timer.Milliseconds();
-                        time = newtime - oldtime;
+                int oldtime = Timer.Milliseconds();
+                while (!gameShouldShutDown) {
+                    // find time spending rendering last frame
+                    final int newtime = Timer.Milliseconds();
+                    final int time = newtime - oldtime;
 
-                        if (time > 0)
-                            Qcommon.Frame(time);
-                        oldtime = newtime;
+                    if (time > 0) {
+                        Qcommon.Frame(time);
                     }
+                    oldtime = newtime;
                 }
+            } catch(Throwable t) {
+                System.err.println("Jake2 Applet Game Exception: "+t.getClass().getName()+": "+t.getMessage());
+                t.printStackTrace();
             } finally {
-                synchronized(shutDownLock) {
-                    shutDown = true;
-                    shutDownLock.notifyAll();
+                synchronized(gameLifecycleLock) {
+                    System.err.println("Jake2 Applet Game STOP.0: "+Thread.currentThread().getName());
+                    try {
+                        Cmd.ExecuteString("quit");
+                    } catch (Exception e) {
+                        System.err.println("Jake2 Applet Game STOP Catched:");
+                        e.printStackTrace();
+                    }
+                    gameShutDown = true;
+                    gameStarted = false;
+                    gameLifecycleLock.notifyAll();
+                    System.err.println("Jake2 Applet Game STOP.X: "+Thread.currentThread().getName());
                 }
             }
         }

@@ -27,6 +27,7 @@ package jake2.render.opengl;
 
 import java.util.List;
 
+import jake2.client.VID;
 import jake2.game.cvar_t;
 import jake2.qcommon.Cvar;
 import jake2.qcommon.xcommand_t;
@@ -109,8 +110,9 @@ public abstract class JoglGL2Driver extends JoglGL2ES1 implements GLDriver {
         return true;
     }
 
-    public void beginFrame(float camera_separation) {
-        activateGLContext();
+    @Override
+    public boolean beginFrame(float camera_separation) {
+        return activateGLContext(false);
     }
 
     public void endFrame() {
@@ -137,12 +139,12 @@ public abstract class JoglGL2Driver extends JoglGL2ES1 implements GLDriver {
         callback.execute();
     }
 
-    protected final void activateGLContext() {
-        newtWin.activateGLContext();        
+    protected final boolean activateGLContext(boolean force) {
+        return newtWin.activateGLContext(force);        
     }
 
     protected final void deactivateGLContext() {
-        newtWin.activateGLContext();        
+        newtWin.deactivateGLContext();        
     }
     
     // --------------------------------------------------------------------------    

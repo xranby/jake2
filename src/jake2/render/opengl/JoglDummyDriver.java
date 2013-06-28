@@ -97,8 +97,9 @@ public abstract class JoglDummyDriver extends DummyGL implements GLDriver {
         return true;
     }
 
-    public void beginFrame(float camera_separation) {
-        activateGLContext();
+    @Override
+    public boolean beginFrame(float camera_separation) {
+        return activateGLContext(false);
     }
 
     public void endFrame() {
@@ -126,12 +127,12 @@ public abstract class JoglDummyDriver extends DummyGL implements GLDriver {
         callback.execute();
     }
 
-    protected final void activateGLContext() {
-        newtWin.activateGLContext();        
+    protected final boolean activateGLContext(boolean force) {
+        return newtWin.activateGLContext(false);        
     }
 
     protected final void deactivateGLContext() {
-        newtWin.activateGLContext();        
+        newtWin.deactivateGLContext();        
     }
     
     // --------------------------------------------------------------------------    

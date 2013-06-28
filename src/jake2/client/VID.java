@@ -327,11 +327,12 @@ public class VID extends Globals {
 				Restart_f();
 			}
 		});
-
+		
 		/* Disable the 3Dfx splash screen */
 		// putenv("FX_GLIDE_NO_SPLASH=0");
 		
 		/* Start the graphics mode and load refresh DLL */
+                vid_ref.modified = true;
 		CheckChanges();
 	}
 

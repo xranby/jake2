@@ -38,7 +38,7 @@
 		<argument>clientport</argument>
 		<argument>27910</argument>
 		<argument>+connect</argument>
-		<argument>88.198.147.212</argument>					
+		<argument>88.198.147.212</argument>
 	</application-desc> 
 	
 </jnlp>

@@ -226,7 +226,7 @@ public final class Sys extends Defines {
     }
 
     public static void SendKeyEvents() {
-		Globals.re.getKeyboardHandler().Update();
+        Globals.re.getKeyboardHandler().Update();
 
         // grab frame time
         Globals.sys_frame_time = Timer.Milliseconds();

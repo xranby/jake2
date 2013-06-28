@@ -44,21 +44,25 @@ public final class InputListener implements KeyListener, MouseListener, WindowLi
 	}
 
 	static Jake2InputEvent nextEvent() {
-		Jake2InputEvent ev;
-		synchronized (eventQueue) {
-			ev = (!eventQueue.isEmpty())?(Jake2InputEvent)eventQueue.removeFirst():null;
-		}
-		return ev;
+    		Jake2InputEvent ev;
+    		synchronized (eventQueue) {
+    			ev = (!eventQueue.isEmpty())?(Jake2InputEvent)eventQueue.removeFirst():null;
+    		}
+    		return ev;
 	}
 
         @Override
 	public void keyPressed(KeyEvent e) {
-	    addEvent(new Jake2InputEvent(Jake2InputEvent.KeyPress, e));
+            if( !e.isAutoRepeat() ) {
+                addEvent(new Jake2InputEvent(Jake2InputEvent.KeyPress, e));
+            }
 	}
 
         @Override
 	public void keyReleased(KeyEvent e) {
-	    addEvent(new Jake2InputEvent(Jake2InputEvent.KeyRelease, e));
+            if( !e.isAutoRepeat() ) {
+                addEvent(new Jake2InputEvent(Jake2InputEvent.KeyRelease, e));
+            }
 	}
 
         @Override

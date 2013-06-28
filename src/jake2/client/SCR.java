@@ -286,10 +286,9 @@ public final class SCR extends Globals {
         int x, y;
         int remaining;
 
-        if (cs == null)
+        if (cs.length() == 0) {
             return;
-        if (cs.length() == 0)
-            return;
+        }
 
         // the finale prints the characters one at a time
         remaining = 9999;
@@ -621,19 +620,21 @@ public final class SCR extends Globals {
         start = Timer.Milliseconds();
 
         if (Cmd.Argc() == 2) { // run without page flipping
-            re.BeginFrame(0);
-            for (i = 0; i < 128; i++) {
-                cl.refdef.viewangles[1] = i / 128.0f * 360.0f;
-                re.RenderFrame(cl.refdef);
+            if ( re.BeginFrame(0) ) {
+                for (i = 0; i < 128; i++) {
+                    cl.refdef.viewangles[1] = i / 128.0f * 360.0f;
+                    re.RenderFrame(cl.refdef);
+                }
+                re.EndFrame();
             }
-            re.EndFrame();
         } else {
             for (i = 0; i < 128; i++) {
                 cl.refdef.viewangles[1] = i / 128.0f * 360.0f;
 
-                re.BeginFrame(0);
-                re.RenderFrame(cl.refdef);
-                re.EndFrame();
+                if( re.BeginFrame(0) ) {
+                    re.RenderFrame(cl.refdef);
+                    re.EndFrame();
+                }
             }
         }
 
@@ -1206,79 +1207,85 @@ public final class SCR extends Globals {
             numframes = 1;
         }
 
+        boolean frameRendered = false;
+        
         for (i = 0; i < numframes; i++) {
-            re.BeginFrame(separation[i]);
-
-            if (scr_draw_loading == 2) { //  loading plaque over black screen
-                Dimension dim = new Dimension();
-
-                re.CinematicSetPalette(null);
-                scr_draw_loading = 0; // false
-                re.DrawGetPicSize(dim, "loading");
-                re.DrawPic((viddef.getWidth() - dim.getWidth()) / 2,
-                        (viddef.getHeight() - dim.getHeight()) / 2, "loading");
-            }
-            // if a cinematic is supposed to be running, handle menus
-            // and console specially
-            else if (cl.cinematictime > 0) {
-                if (cls.key_dest == key_menu) {
-                    if (cl.cinematicpalette_active) {
-                        re.CinematicSetPalette(null);
-                        cl.cinematicpalette_active = false;
-                    }
-                    Menu.Draw();
-                } else if (cls.key_dest == key_console) {
-                    if (cl.cinematicpalette_active) {
-                        re.CinematicSetPalette(null);
-                        cl.cinematicpalette_active = false;
-                    }
-                    DrawConsole();
-                } else {
-                    // TODO implement cinematics completely
-                    DrawCinematic();
-                }
-            } else {
-                // make sure the game palette is active
-                if (cl.cinematicpalette_active) {
+            if ( re.BeginFrame(separation[i]) ) {
+                frameRendered = true;
+                
+                if (scr_draw_loading == 2) { //  loading plaque over black screen
+                    Dimension dim = new Dimension();
+    
                     re.CinematicSetPalette(null);
-                    cl.cinematicpalette_active = false;
+                    scr_draw_loading = 0; // false
+                    re.DrawGetPicSize(dim, "loading");
+                    re.DrawPic((viddef.getWidth() - dim.getWidth()) / 2,
+                            (viddef.getHeight() - dim.getHeight()) / 2, "loading");
                 }
-
-                // do 3D refresh drawing, and then update the screen
-                CalcVrect();
-
-                // clear any dirty part of the background
-                TileClear();
-
-                V.RenderView(separation[i]);
-
-                DrawStats();
-
-                if ((cl.frame.playerstate.stats[STAT_LAYOUTS] & 1) != 0)
-                    DrawLayout();
-                if ((cl.frame.playerstate.stats[STAT_LAYOUTS] & 2) != 0)
-                    CL_inv.DrawInventory();
-
-                DrawNet();
-                CheckDrawCenterString();
-                DrawFPS();
-
-                //
-                //				if (scr_timegraph->value)
-                //					SCR_DebugGraph (cls.frametime*300, 0);
-                //
-                //				if (scr_debuggraph->value || scr_timegraph->value ||
-                // scr_netgraph->value)
-                //					SCR_DrawDebugGraph ();
-                //
-                DrawPause();
-                DrawConsole();
-                Menu.Draw();
-                DrawLoading();
+                // if a cinematic is supposed to be running, handle menus
+                // and console specially
+                else if (cl.cinematictime > 0) {
+                    if (cls.key_dest == key_menu) {
+                        if (cl.cinematicpalette_active) {
+                            re.CinematicSetPalette(null);
+                            cl.cinematicpalette_active = false;
+                        }
+                        Menu.Draw();
+                    } else if (cls.key_dest == key_console) {
+                        if (cl.cinematicpalette_active) {
+                            re.CinematicSetPalette(null);
+                            cl.cinematicpalette_active = false;
+                        }
+                        DrawConsole();
+                    } else {
+                        // TODO implement cinematics completely
+                        DrawCinematic();
+                    }
+                } else {
+                    // make sure the game palette is active
+                    if (cl.cinematicpalette_active) {
+                        re.CinematicSetPalette(null);
+                        cl.cinematicpalette_active = false;
+                    }
+    
+                    // do 3D refresh drawing, and then update the screen
+                    CalcVrect();
+    
+                    // clear any dirty part of the background
+                    TileClear();
+    
+                    V.RenderView(separation[i]);
+    
+                    DrawStats();
+    
+                    if ((cl.frame.playerstate.stats[STAT_LAYOUTS] & 1) != 0)
+                        DrawLayout();
+                    if ((cl.frame.playerstate.stats[STAT_LAYOUTS] & 2) != 0)
+                        CL_inv.DrawInventory();
+    
+                    DrawNet();
+                    CheckDrawCenterString();
+                    DrawFPS();
+    
+                    //
+                    //				if (scr_timegraph->value)
+                    //					SCR_DebugGraph (cls.frametime*300, 0);
+                    //
+                    //				if (scr_debuggraph->value || scr_timegraph->value ||
+                    // scr_netgraph->value)
+                    //					SCR_DrawDebugGraph ();
+                    //
+                    DrawPause();
+                    DrawConsole();
+                    Menu.Draw();
+                    DrawLoading();
+                }
             }
         }
 
-        Globals.re.EndFrame();
+        if( frameRendered ) {
+            Globals.re.EndFrame();
+        }
     }
 
     /*

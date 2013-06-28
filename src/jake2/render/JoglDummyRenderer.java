@@ -73,7 +73,7 @@ final class JoglDummyRenderer extends JoglDummyDriver implements refexport_t, Re
         // pre init, reads Cvar's
         if (!impl.R_Init(vid_xpos, vid_ypos)) return false;
         // activates the OpenGL context        
-        activateGLContext();
+        activateGLContext(true);
         
         // post init        
         return impl.R_Init2();
@@ -90,7 +90,7 @@ final class JoglDummyRenderer extends JoglDummyDriver implements refexport_t, Re
      * @see jake2.client.refexport_t#BeginRegistration(java.lang.String)
      */
     public final void BeginRegistration(String map) {
-        activateGLContext();
+        activateGLContext(true);
         impl.R_BeginRegistration(map);
     }
 
@@ -98,7 +98,7 @@ final class JoglDummyRenderer extends JoglDummyDriver implements refexport_t, Re
      * @see jake2.client.refexport_t#RegisterModel(java.lang.String)
      */
     public final model_t RegisterModel(String name) {
-        activateGLContext();
+        activateGLContext(true);
         return impl.R_RegisterModel(name);
     }
 
@@ -106,7 +106,7 @@ final class JoglDummyRenderer extends JoglDummyDriver implements refexport_t, Re
      * @see jake2.client.refexport_t#RegisterSkin(java.lang.String)
      */
     public final image_t RegisterSkin(String name) {
-        activateGLContext();
+        activateGLContext(true);
         return impl.R_RegisterSkin(name);
     }
 
@@ -114,14 +114,14 @@ final class JoglDummyRenderer extends JoglDummyDriver implements refexport_t, Re
      * @see jake2.client.refexport_t#RegisterPic(java.lang.String)
      */
     public final image_t RegisterPic(String name) {
-        activateGLContext();
+        activateGLContext(true);
         return impl.Draw_FindPic(name);
     }
     /** 
      * @see jake2.client.refexport_t#SetSky(java.lang.String, float, float[])
      */
     public final void SetSky(String name, float rotate, float[] axis) {
-        activateGLContext();
+        activateGLContext(true);
         impl.R_SetSky(name, rotate, axis);
     }
 
@@ -129,7 +129,7 @@ final class JoglDummyRenderer extends JoglDummyDriver implements refexport_t, Re
      * @see jake2.client.refexport_t#EndRegistration()
      */
     public final void EndRegistration() {
-        activateGLContext();
+        activateGLContext(true);
         impl.R_EndRegistration();
     }
 
@@ -165,7 +165,7 @@ final class JoglDummyRenderer extends JoglDummyDriver implements refexport_t, Re
      * @see jake2.client.refexport_t#DrawChar(int, int, int)
      */
     public final void DrawChar(int x, int y, int num) {
-        activateGLContext();
+        activateGLContext(true);
         impl.Draw_Char(x, y, num);
     }
 
@@ -207,8 +207,8 @@ final class JoglDummyRenderer extends JoglDummyDriver implements refexport_t, Re
     /** 
      * @see jake2.client.refexport_t#BeginFrame(float)
      */
-    public final void BeginFrame(float camera_separation) {
-        impl.R_BeginFrame(camera_separation);
+    public final boolean BeginFrame(float camera_separation) {
+        return impl.R_BeginFrame(camera_separation);
     }
 
     /** 
@@ -226,7 +226,7 @@ final class JoglDummyRenderer extends JoglDummyDriver implements refexport_t, Re
     }
 
     public void screenshot() {
-        activateGLContext();
+        activateGLContext(true);
         impl.GL_ScreenShot_f();
     }
 

@@ -1358,7 +1358,7 @@ public abstract class Main extends Base {
 	R_BeginFrame
 	@@@@@@@@@@@@@@@@@@@@@
 	*/
-	public void R_BeginFrame(float camera_separation) {
+	public boolean R_BeginFrame(float camera_separation) {
 	    
 	    vid.update();
 	    
@@ -1408,7 +1408,7 @@ public abstract class Main extends Base {
 			}
 		}
 
-        glImpl.beginFrame(camera_separation);
+            if( glImpl.beginFrame(camera_separation) ) {
 
 		/*
 		** go into 2D mode
@@ -1466,6 +1466,11 @@ public abstract class Main extends Base {
 		// clear screen if desired
 		//
 		R_Clear();
+		
+		return true;
+            } else {
+                return false;
+            }
 	}
 
 	int[] r_rawpalette = new int[256];

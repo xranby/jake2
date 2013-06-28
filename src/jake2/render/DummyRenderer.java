@@ -141,7 +141,8 @@ public class DummyRenderer implements refexport_t {
 	/* (non-Javadoc)
 	 * @see jake2.client.refexport_t#BeginFrame(float)
 	 */
-	public void BeginFrame(float camera_separation) {
+	public boolean BeginFrame(float camera_separation) {
+	    return true;
 	}
 
 	/* (non-Javadoc)

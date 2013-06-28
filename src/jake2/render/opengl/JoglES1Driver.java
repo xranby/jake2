@@ -108,8 +108,9 @@ public abstract class JoglES1Driver extends JoglGL2ES1 implements GLDriver {
         return true;
     }
 
-    public void beginFrame(float camera_separation) {
-        newtWin.activateGLContext();
+    @Override
+    public boolean beginFrame(float camera_separation) {
+        return activateGLContext(false);
     }
 
     public void endFrame() {
@@ -136,12 +137,12 @@ public abstract class JoglES1Driver extends JoglGL2ES1 implements GLDriver {
         callback.execute();
     }
 
-    protected final void activateGLContext() {
-        newtWin.activateGLContext();        
+    protected final boolean activateGLContext(boolean force) {
+        return newtWin.activateGLContext(force);        
     }
 
     protected final void deactivateGLContext() {
-        newtWin.activateGLContext();        
+        newtWin.deactivateGLContext();        
     }
     
     // --------------------------------------------------------------------------    

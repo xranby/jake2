@@ -1312,7 +1312,7 @@ public abstract class Main extends Base {
     /**
      * R_BeginFrame
      */
-    public void R_BeginFrame(float camera_separation) {
+    public boolean R_BeginFrame(float camera_separation) {
 
         vid.update();
 
@@ -1363,64 +1363,68 @@ public abstract class Main extends Base {
             }
         }
 
-        glImpl.beginFrame(camera_separation);
-
-        /*
-         ** go into 2D mode
-         */
-        gl.glViewport(0, 0, vid.getWidth(), vid.getHeight());
-        gl.glMatrixMode(GL_PROJECTION);
-        gl.glLoadIdentity();
-        gl.glOrtho(0, vid.getWidth(), vid.getHeight(), 0, -99999, 99999);
-        gl.glMatrixMode(GL_MODELVIEW);
-        gl.glLoadIdentity();
-        gl.glDisable(GL_DEPTH_TEST);
-        gl.glDisable(GL_CULL_FACE);
-        gl.glDisable(GL_BLEND);
-        gl.glEnable(GL_ALPHA_TEST);
-        gl.glColor4f(1, 1, 1, 1);
-
-        /*
-         ** draw buffer stuff
-         */
-        if (gl_drawbuffer.modified) {
-            gl_drawbuffer.modified = false;
-
-            if (gl_state.camera_separation == 0 || !gl_state.stereo_enabled) {
-                if (gl_drawbuffer.string.equalsIgnoreCase("GL_FRONT"))
-                    gl.glDrawBuffer(GL_FRONT);
-                else
-                    gl.glDrawBuffer(GL_BACK);
+        if( glImpl.beginFrame(camera_separation) ) {
+            /*
+             ** go into 2D mode
+             */
+            gl.glViewport(0, 0, vid.getWidth(), vid.getHeight());
+            gl.glMatrixMode(GL_PROJECTION);
+            gl.glLoadIdentity();
+            gl.glOrtho(0, vid.getWidth(), vid.getHeight(), 0, -99999, 99999);
+            gl.glMatrixMode(GL_MODELVIEW);
+            gl.glLoadIdentity();
+            gl.glDisable(GL_DEPTH_TEST);
+            gl.glDisable(GL_CULL_FACE);
+            gl.glDisable(GL_BLEND);
+            gl.glEnable(GL_ALPHA_TEST);
+            gl.glColor4f(1, 1, 1, 1);
+    
+            /*
+             ** draw buffer stuff
+             */
+            if (gl_drawbuffer.modified) {
+                gl_drawbuffer.modified = false;
+    
+                if (gl_state.camera_separation == 0 || !gl_state.stereo_enabled) {
+                    if (gl_drawbuffer.string.equalsIgnoreCase("GL_FRONT"))
+                        gl.glDrawBuffer(GL_FRONT);
+                    else
+                        gl.glDrawBuffer(GL_BACK);
+                }
             }
+    
+            /*
+             ** texturemode stuff
+             */
+            if (gl_texturemode.modified) {
+                GL_TextureMode(gl_texturemode.string);
+                gl_texturemode.modified = false;
+            }
+    
+            if (gl_texturealphamode.modified) {
+                GL_TextureAlphaMode(gl_texturealphamode.string);
+                gl_texturealphamode.modified = false;
+            }
+    
+            if (gl_texturesolidmode.modified) {
+                GL_TextureSolidMode(gl_texturesolidmode.string);
+                gl_texturesolidmode.modified = false;
+            }
+    
+            /*
+             ** swapinterval stuff
+             */
+            GL_UpdateSwapInterval();
+    
+            //
+            // clear screen if desired
+            //
+            R_Clear();
+            
+            return true;
+        } else {
+            return true;
         }
-
-        /*
-         ** texturemode stuff
-         */
-        if (gl_texturemode.modified) {
-            GL_TextureMode(gl_texturemode.string);
-            gl_texturemode.modified = false;
-        }
-
-        if (gl_texturealphamode.modified) {
-            GL_TextureAlphaMode(gl_texturealphamode.string);
-            gl_texturealphamode.modified = false;
-        }
-
-        if (gl_texturesolidmode.modified) {
-            GL_TextureSolidMode(gl_texturesolidmode.string);
-            gl_texturesolidmode.modified = false;
-        }
-
-        /*
-         ** swapinterval stuff
-         */
-        GL_UpdateSwapInterval();
-
-        //
-        // clear screen if desired
-        //
-        R_Clear();
     }
 
     int[] r_rawpalette = new int[256];

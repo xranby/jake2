@@ -119,6 +119,10 @@ final public class NEWTKBD extends KBD
 
 	private static int XLateKeyCode(KeyEvent ev) { 
 		int code = ev.getKeyCode();
+		// FIXME: Workaround JOGL/NEWT Bug 798
+		if( 0 == code ) {
+		    code = ev.getKeySymbol();
+		}
                 int key = 0;
 		switch(code) {
 //	00626                 case XK_KP_Page_Up:      key = K_KP_PGUP; break;
