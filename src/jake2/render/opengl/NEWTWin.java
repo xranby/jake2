@@ -494,10 +494,6 @@ public class NEWTWin {
            System.err.println(e);
            if( !e.isAutoRepeat() ) {
                int keyCode = e.getKeyCode();
-               // FIXME: Workaround JOGL/NEWT Bug 798
-               if( 0 == keyCode ) {
-                   keyCode = e.getKeySymbol();
-               }
                if( KeyEvent.VK_HOME == keyCode ) {
                    shouldReparent = true;
                }
