@@ -30,6 +30,10 @@
                value="${java.home}/lib/plugin.jar">
                <available file="${java.home}/lib/plugin.jar"/>
     </condition>
+    <condition property="plugin.jar"
+               value="/usr/share/icedtea-web/plugin.jar">
+               <available file="/usr/share/icedtea-web/plugin.jar"/>
+    </condition>
 
     <!-- Default value for std Java (incl. Java7 on OS X) -->
     <condition property="target.rt.jar"
@@ -73,6 +77,39 @@
     <target name="init">
         <mkdir dir="${build}"/>
         <mkdir dir="${dist}/lib"/>
+        <get dest="lib/jogamp" verbose="true" skipexisting="true">
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/gluegen-rt-natives-android-armv6.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/gluegen-rt-natives-linux-amd64.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/gluegen-rt-natives-linux-armv6.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/gluegen-rt-natives-linux-armv6hf.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/gluegen-rt-natives-linux-i586.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/gluegen-rt-natives-macosx-universal.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/gluegen-rt-natives-solaris-amd64.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/gluegen-rt-natives-solaris-i586.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/gluegen-rt-natives-windows-amd64.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/gluegen-rt-natives-windows-i586.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/gluegen-rt.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/joal-natives-linux-amd64.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/joal-natives-linux-armv6.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/joal-natives-linux-armv6hf.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/joal-natives-linux-i586.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/joal-natives-macosx-universal.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/joal-natives-solaris-amd64.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/joal-natives-solaris-i586.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/joal-natives-windows-amd64.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/joal-natives-windows-i586.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/joal.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/jogl-all-natives-linux-amd64.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/jogl-all-natives-linux-armv6.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/jogl-all-natives-linux-armv6hf.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/jogl-all-natives-linux-i586.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/jogl-all-natives-macosx-universal.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/jogl-all-natives-solaris-amd64.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/jogl-all-natives-solaris-i586.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/jogl-all-natives-windows-amd64.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/jogl-all-natives-windows-i586.jar"/>
+            <url url="http://jogamp.org/deployment/jogamp-current/jar/jogl-all.jar"/>
+        </get>
     </target>
 
     <!-- compile -->
